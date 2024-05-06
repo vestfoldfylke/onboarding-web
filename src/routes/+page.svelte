@@ -5,14 +5,14 @@
 <main>
     <div class="cardsCollection">
         <button on:click={() => goto('/ansatt')} class="card">
-            <img src="src\assets\training.png" alt="Ikon bilde av en ansatt"/>
+            <img src="src\assets\person.svg" alt="Ikon bilde av en ansatt"/>
             <div class="container">
                 <h3><b>Ansatt</b></h3>
                 <p>Her trykker du om du er ansattasdfasdf</p>
             </div>
         </button>
         <button on:click={() => goto('/elev')} class="card">
-            <img src="src\assets\student.png" alt="Ikon bilde av en elev"/>
+            <img src="src\assets\school.svg" alt="Ikon bilde av en elev"/>
             <div class="container">
                 <h3><b>Elev eller lærling</b></h3>
                 <p>Her trykker du om du er elev eller lærlig</p>
