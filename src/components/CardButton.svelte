@@ -28,6 +28,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
+        cursor: pointer;
     }
     .card {
         /* Add shadows to create the "card" effect */
