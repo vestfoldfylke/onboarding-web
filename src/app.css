@@ -99,6 +99,14 @@ input, select, textarea, button {
   font-size: inherit;
 }
 
+a {
+	color: var(--vann);
+}
+
+a:hover {
+	color: #000;
+}
+
 button {
 	padding: 8px;
 	cursor: pointer;
