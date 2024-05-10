@@ -2,6 +2,7 @@
   import { getLoginUrl } from '../../lib/useApi'
   import CardButton from '../../lib/components/CardButton.svelte'
   import { goto } from '$app/navigation'
+  import key from '$lib/assets/key.svg'
 
   const redirect = async () => {
     // const confirmation = confirm("Er du sikker på du vil resette ditt passord?")
@@ -25,7 +26,7 @@
   </div>
   -->
   <div class="centerstuff">
-    <CardButton header={'Tilbakestill mitt passord, og send engangspassord på sms'} imgPath={'src/assets/key.svg'} imgAlt={'Ikon bilde av en nøkkel'} gotoPath={''} paragraph={'Krever pålogging med MinID eller BankID'} boolValue={false} func={redirect}/>
+    <CardButton header={'Tilbakestill mitt passord, og send engangspassord på sms'} imgPath={key} imgAlt={'Ikon bilde av en nøkkel'} gotoPath={''} paragraph={'Krever pålogging med MinID eller BankID'} boolValue={false} func={redirect}/>
   </div>
 </main>
 
