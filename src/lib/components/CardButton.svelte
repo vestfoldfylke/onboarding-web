@@ -34,7 +34,7 @@
         /* Add shadows to create the "card" effect */
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         transition: 0.3s;
-        flex: 0 1 calc(25% - 1em);
+        flex: 0 1 calc(15% - 1em);
         border-radius: 1rem;
         margin: 1rem;
         min-width: calc(20em - 1em);
@@ -56,8 +56,8 @@
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
-        align-items: flex-start;
         width: 100%;
+        text-align: center;
     }
 
     .card img {
@@ -69,23 +69,22 @@
         all:unset
     }
 
-    /* @media screen and (max-width: 60em) {
+    @media only screen and (max-width: 768px) {
+        /* For mobile phones: */
         .card {
+            /* Add shadows to create the "card" effect */
             flex: 0 1 calc(25% - 1em);
+            border-radius: 1rem;
+            margin: 0.5rem;
+            min-width: calc(23em - 1em);
+            max-width: calc(23em - 1em);
+            padding: 0.2rem;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
         }
-        .card img {
-            height: calc(50% - 1em);
-            width: calc(101% - 1em);
-        }
-    }
-
-    @media screen and (max-width: 40em) {   
-        .card {
-            flex: 0 1 calc(25% - 1em);
-        }
-        .card img {
-            height: calc(50% - 1em);
-            width: calc(101% - 1em);
-        }
-    } */
+    }  
 </style>
