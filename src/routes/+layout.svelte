@@ -1,8 +1,15 @@
 <script>
   import '../app.css' // Add global css (and make it hot reload)
   import logo from '$lib/assets/logo.png'
+  import { getLogoutUrl } from '../lib/useApi'
+  import { goto } from '$app/navigation'
 
-  const appTitle = "All aboard! 🚂"
+  const logout = async () => {
+    const { logoutUrl } = await getLogoutUrl()
+    window.location.href = logoutUrl
+  }
+
+  const appTitle = "Brukerportal"
 
 </script>
 
@@ -13,7 +20,8 @@
     </div>
     <a href="/" title="Gå til forsiden" class="appTitle"><h1>{appTitle}</h1></a>
     <div class="topbarOptions">
-      <a href="/help"><span class="material-symbols-outlined">help</span>Hjelp</a>
+      <button class="link" on:click={logout}><span class="material-symbols-outlined">logout</span>Hjem / Logg ut</button>
+      <button class="link" on:click={() => { goto('/help', { replaceState: false }) }}><span class="material-symbols-outlined">help</span>Hjelp</button>
     </div>
   </div>
 </div>
@@ -64,6 +72,7 @@
       padding: 5px;
     }
     .appTitle {
+      display: none;
       font-size: 10px;
     }
     .logo {
