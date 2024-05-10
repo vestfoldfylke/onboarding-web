@@ -1,8 +1,8 @@
 <div>
   <h1>Hjelp</h1>
   <br />
-  <h2>Hjeeeeelp</h2>
-  <h3>HjeeeeeEEEEEEEeeeelp!</h3>
+  <h2>Hvem skriver noe her?</h2>
+  <h3>Stine?</h3>
 </div>
 
 
