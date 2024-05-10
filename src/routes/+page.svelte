@@ -1,16 +1,20 @@
 <script>
-  import { goto } from '$app/navigation';
-
-  import CardButton from '../components/CardButton.svelte'
+  import CardButton from '../lib/components/CardButton.svelte'
 </script>
 
 <main>
-    <CardButton header={'Ansatt'} imgPath={'src/assets/person.svg'} imgAlt={'Ikon bilde av en ansatt'} gotoPath={'/ansatt'} paragraph={'Her trykker du om du er ansatt'} boolValue={true}/>
-    <CardButton header={'Elev eller lærling'} imgPath={'src/assets/school.svg'} imgAlt={'Ikon bilde av en elev'} gotoPath={'/elev'} paragraph={'Her trykker du om du er elev eller lærling'} boolValue={true}/>
+    <div class="centerstuff">
+        <h3>Her kan du logge på med MinID eller BankID for å tilbakestille passord</h3>
+    </div>
+    <div class="centerstuff">
+        <CardButton header={'Elev eller lærling'} imgPath={'src/assets/school.svg'} imgAlt={'Ikon bilde av en elev'} gotoPath={'/elev'} paragraph={'Her trykker du om du er elev eller lærling'} boolValue={true}/>
+        <CardButton header={'Ansatt'} imgPath={'src/assets/person.svg'} imgAlt={'Ikon bilde av en ansatt'} gotoPath={'/ansatt'} paragraph={'Her trykker du om du er ansatt'} boolValue={true}/>
+    </div>
 </main>
 
+
 <style>
-   main {
+   .centerstuff {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
