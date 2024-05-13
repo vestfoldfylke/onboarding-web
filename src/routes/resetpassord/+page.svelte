@@ -42,7 +42,8 @@
     try {
       resetPasswordResponse = await resetPassword(code, iss, state)
     } catch (error) {
-      resetPasswordResponse = { hasError: true, message: JSON.stringify(error.response?.data || error.stack) }
+      const errorMsg =  error.response?.data?.message || error.stack || error.toString()
+      resetPasswordResponse = { hasError: true, message: errorMsg }
     }
   }
 
@@ -70,7 +71,8 @@
       <p class="loadingMessage">{loadingMessage}...</p>
     </div>
   {:else if resetPasswordResponse.hasError}
-    {JSON.stringify(resetPasswordResponse, null, 2)}
+    <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
+    <div class="error">{resetPasswordResponse.message}</div>
   {:else}
     <h3>Hei, {resetPasswordResponse.displayName}</h3>
     <br />
@@ -87,11 +89,11 @@
     <br>
     <p>Når du har fått engangspassord på sms, går du til <a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a> for å sette et nytt passord og evt to-faktor</p>
     <p>Når dette er gjort er brukeren din aktivert og klar til vanlig bruk. Ta kontakt med servicedesk dersom du trenger hjelp.</p>
-    <br>
-    <h4>Servicedesk</h4>
-    <p>Telefon: {import.meta.env.VITE_SERVICEDESK_TLF}</p>
-    <p>E-post: {import.meta.env.VITE_SERVICEDESK_EPOST}</p>
   {/if}
+  <br>
+  <h4>Servicedesk</h4>
+  <p>Telefon: {import.meta.env.VITE_SERVICEDESK_TLF}</p>
+  <p>E-post: {import.meta.env.VITE_SERVICEDESK_EPOST}</p>
 </div>
 
 
@@ -130,5 +132,9 @@
   }
   .action:hover {
     background-color: var(--himmel-50);
+  }
+  .error {
+    background-color: var(--nype-10);
+    padding: 16px;
   }
 </style>
