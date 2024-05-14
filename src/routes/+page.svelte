@@ -6,7 +6,7 @@
 
 <main>
     <div class="centerstuff">
-        <h3>Her kan du logge på med MinID eller BankID for å tilbakestille passord</h3>
+        <h3>Her kan du logge på med MinID eller BankID for å aktivere brukeren din eller tilbakestille passordet ditt</h3>
     </div>
     <div class="centerstuff">
         <CardButton header={'Elev eller lærling'} imgPath={school} imgAlt={'Ikon bilde av en elev'} gotoPath={'/elev'} paragraph={'Her trykker du om du er elev eller lærling'} boolValue={true}/>
