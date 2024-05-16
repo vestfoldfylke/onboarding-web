@@ -9,14 +9,14 @@
     window.location.href = logoutUrl
   }
 
-  const appTitle = "Brukerportal"
+  const appTitle = ""
 
 </script>
 
 <div class="topbar">
   <div class="toptop">
     <div>
-      <img class="logo" src={logo} alt="Fylkekommunens logo" />
+      <a href="/"><img class="logo" src={logo} alt="Fylkekommunens logo" /></a>
     </div>
     <a href="/" title="Gå til forsiden" class="appTitle"><h1>{appTitle}</h1></a>
     <div class="topbarOptions">

@@ -76,9 +76,13 @@
   {:else}
     <h3>Hei, {resetPasswordResponse.displayName}</h3>
     <br />
-    <p>Vi har nå sendt et engangspassord til deg på tlf nr: <strong>{resetPasswordResponse.maskedPhoneNumber}</strong></p>
-    <p><i>Er ikke dette ditt telefonnummer? Sjekk hva du har registrert i kontakt og reservasjons-registeret her: <a href="https://minprofil.kontaktregisteret.no" target="_blank">https://minprofil.kontaktregisteret.no</a></i></p>
+    <p>Ditt brukernavn er: <strong>{resetPasswordResponse.userPrincipalName}</strong></p>
     <br />
+    <p>Vi har sendt et engangspassord på SMS til mobilnummer: <strong>{resetPasswordResponse.maskedPhoneNumber}</strong></p>
+    <p>Er det ikke ditt mobilnummer? <a href="https://minprofil.kontaktregisteret.no" target="_blank">Trykk her for å sjekke hva du har registrert i Kontakt- og reservasjonsregisteret</a></p>
+    <p><i>Har du ikke fått sms og det er ditt mobilnummer? Vent i 10 min og prøv igjen, eller ta kontakt med Bjørn Riis</i></p>
+    <br />
+    <!--
     <div class="usernameContainer">
       <p>Brukernavn: </p>
       <button title="Kopier brukernavn" class="action" on:click={copyUsername}>{resetPasswordResponse.userPrincipalName}<span class="material-symbols-outlined">content_copy</span></button>
@@ -87,13 +91,28 @@
       {/if}
     </div>
     <br>
-    <p>Når du har fått engangspassord på sms, går du til <a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a> for å sette et nytt passord og evt to-faktor</p>
-    <p>Når dette er gjort er brukeren din aktivert og klar til vanlig bruk. Ta kontakt med servicedesk dersom du trenger hjelp.</p>
+    -->
+    <p>Når du har mottatt engangspassordet på SMS, klikker du deg inn på:</p>
+    <p><a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a></p>
+    <br />
+    <p>Her skal du gjøre to ting før du er ferdig:</p>
+    <ul>
+      <li>Erstatte engangspassordet du fikk tilsendt med et eget passord
+        <ul>
+          <li>Passordet du lager må bestå av minst 14 tegn, inneholde små og store bokstaver, og minst et tall eller tegn</li>
+        </ul>
+      </li>
+      <li>Sette opp tofaktorautentisering* </li>
+    </ul>
+    <br />
+    <p>Når du har laget deg et nytt passord og satt opp tofaktorautentisering, er den nye brukeren din aktivert og klar til bruk. Ta kontakt med servicedesk dersom du trenger hjelp. </p>
   {/if}
   <br>
   <h4>Servicedesk</h4>
-  <p>Telefon: {import.meta.env.VITE_SERVICEDESK_TLF}</p>
-  <p>E-post: {import.meta.env.VITE_SERVICEDESK_EPOST}</p>
+  <p>Telefon: <a href="tel:{import.meta.env.VITE_SERVICEDESK_TLF.replaceAll(' ', '')}">{import.meta.env.VITE_SERVICEDESK_TLF}</a></p>
+  <p>E-post: <a href="mailto:{import.meta.env.VITE_SERVICEDESK_EPOST}">{import.meta.env.VITE_SERVICEDESK_EPOST}</a></p>
+  <br />
+  <p><i>* Tofaktorautentisering betyr at du bruker to faktorer (bevis) for å bekrefte identiteten din når du logger deg på.</i></p>
 </div>
 
 
@@ -108,6 +127,9 @@
   .loadingMessage {
     font-style: italic;
     width: 200px;
+  }
+  ul {
+    padding-left: 32px;
   }
   .usernameContainer {
     display: flex;
