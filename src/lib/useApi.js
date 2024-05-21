@@ -11,6 +11,11 @@ export const getLoginUrl = async (userType) => {
   return data
 }
 
+export const getEntraLoginUrl = async (loginHint) => {
+  const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraLoginUrl?login_hint=${loginHint}`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  return data
+}
+
 export const getLogoutUrl = async () => {
   if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
     return { logoutUrl: '/' }
@@ -21,7 +26,7 @@ export const getLogoutUrl = async () => {
 
 export const resetPassword = async (code, iss, state) => {
   if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
-    await sleep(6000)
+    await sleep(1000)
     return {
       displayName: 'Mock Trynefjert',
       userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no',
@@ -29,5 +34,17 @@ export const resetPassword = async (code, iss, state) => {
     }
   }
   const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/ResetPassword`, { code, iss, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  return data
+}
+
+export const entraAuth = async (code, state) => {
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    await sleep(1000)
+    return {
+      displayName: 'Mock Trynefjert',
+      userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no',
+    }
+  }
+  const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraAuth`, { code, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
   return data
 }

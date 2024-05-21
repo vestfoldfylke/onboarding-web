@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte'
-  import { resetPassword } from '../../lib/useApi'
+  import { resetPassword, getEntraLoginUrl } from '../../lib/useApi'
   import { page } from '$app/stores'
   import IconSpinner from '../../lib/components/Icons/IconSpinner.svelte'
   import { goto } from '$app/navigation'
@@ -25,6 +25,28 @@
     loadingMessage = "Finner på et engangspassord som er vanskelig å gjette"
     await sleep(interval)
     loadingMessage = "Tilbakestiller passord"
+  }
+
+  // Entra ID login
+
+  let entraErrorMessage
+  let entraLoading
+
+  const entraLogin = async (loginHint) => {
+    entraErrorMessage = null
+    if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+      goto('/mockentra', { replaceState: false, invalidateAll: true })
+    } else {
+      try {
+        entraLoading = true
+        const { loginUrl } = await getEntraLoginUrl(loginHint)
+        entraLoading = false
+        window.location.href = loginUrl
+      } catch (error) {
+        entraLoading = false
+        entraErrorMessage = error.response?.data?.message || error.stack || error.toString()
+      }
+    }
   }
 
   // State
@@ -92,10 +114,7 @@
     </div>
     <br>
     -->
-    <p>Når du har mottatt engangspassordet på SMS, klikker du deg inn på:</p>
-    <p><a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a></p>
-    <br />
-    <p>Her skal du gjøre to ting før du er ferdig:</p>
+    <p>Når du har mottatt engangspassordet på SMS, skal du gjøre to ting før du er ferdig:</p>
     <ul>
       <li>Erstatte engangspassordet du fikk tilsendt med et eget passord
         <ul>
@@ -104,6 +123,20 @@
       </li>
       <li>Sette opp tofaktorautentisering* </li>
     </ul>
+    <br />
+    {#if entraErrorMessage}
+      <div class="error">
+        <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
+        <p>{entraErrorMessage}</p>
+      </div>
+    {/if}
+    <p>
+      <button class="link" on:click={() => { entraLogin(resetPasswordResponse.userPrincipalName) }}><span class="material-symbols-outlined">start</span>Klikk her når du har fått sms, og er klar for å gå videre</button>
+      <!--<a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a>-->
+      {#if entraLoading}
+        <IconSpinner width="20px" />
+      {/if}
+    </p>
     <br />
     <p>Når du har laget deg et nytt passord og satt opp tofaktorautentisering, er den nye brukeren din aktivert og klar til bruk. Ta kontakt med servicedesk dersom du trenger hjelp. </p>
   {/if}
