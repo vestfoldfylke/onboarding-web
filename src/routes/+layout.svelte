@@ -79,7 +79,7 @@
       width: 92px;
     }
     .content {
-      padding: 5px;
+      padding: 12px;
     }
   }
 </style>

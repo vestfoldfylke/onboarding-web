@@ -6,6 +6,7 @@
   import { goto } from '$app/navigation'
   import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
+  import InfoBox from '../../lib/components/InfoBox.svelte';
 
   const sleep = (ms) => {
     return new Promise((resolve) => {
@@ -97,55 +98,47 @@
     <div class="error">{resetPasswordResponse.message}</div>
   {:else}
     <h3>Hei, {resetPasswordResponse.displayName}</h3>
-    <br />
-    <p>Ditt brukernavn er: <strong>{resetPasswordResponse.userPrincipalName}</strong></p>
-    <br />
-    <p>Vi har sendt et engangspassord på SMS til mobilnummer: <strong>{resetPasswordResponse.maskedPhoneNumber}</strong></p>
-    <p>Er det ikke ditt mobilnummer? <a href="https://minprofil.kontaktregisteret.no" target="_blank">Trykk her for å sjekke hva du har registrert i Kontakt- og reservasjonsregisteret</a></p>
-    <p><i>Har du ikke fått sms og det er ditt mobilnummer? Vent i 10 min og prøv igjen, eller ta kontakt med Bjørn Riis</i></p>
-    <br />
-    <!--
-    <div class="usernameContainer">
-      <p>Brukernavn: </p>
-      <button title="Kopier brukernavn" class="action" on:click={copyUsername}>{resetPasswordResponse.userPrincipalName}<span class="material-symbols-outlined">content_copy</span></button>
-      {#if showSnackbar}
-        <p class="snackbar" transition:fly={{ delay: 50, duration: 500, x: -50, y: 0, opacity: 0, easing: quintOut }}><span class="material-symbols-outlined">done</span>Kopiert til utklippstavlen</p>
-      {/if}
+    <div class="section">
+      <p><strong>Brukernavn:</strong> {resetPasswordResponse.userPrincipalName}</p>
     </div>
-    <br>
-    -->
-    <p>Når du har mottatt engangspassordet på SMS, skal du gjøre to ting før du er ferdig:</p>
-    <ul>
-      <li>Erstatte engangspassordet du fikk tilsendt med et eget passord
-        <ul>
-          <li>Passordet du lager må bestå av minst 14 tegn, inneholde små og store bokstaver, og minst et tall eller tegn</li>
-        </ul>
-      </li>
-      <li>Sette opp tofaktorautentisering* </li>
-    </ul>
-    <br />
-    {#if entraErrorMessage}
-      <div class="error">
-        <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
-        <p>{entraErrorMessage}</p>
-      </div>
-    {/if}
-    <p>
-      <button class="link" on:click={() => { entraLogin(resetPasswordResponse.userPrincipalName) }}><span class="material-symbols-outlined">start</span>Klikk her når du har fått sms, og er klar for å gå videre</button>
+    <div class="section">
+      <p><strong>Engangspassord sendt til:</strong> {resetPasswordResponse.maskedPhoneNumber}</p>
+    </div>
+    <InfoBox title="Ikke fått SMS?">
+      <p><strong>Er ikke dette ditt mobilnummer?</strong></p>
+      <a href="https://minprofil.kontaktregisteret.no" target="_blank">Trykk her for å sjekke hva du har registrert i Kontakt- og reservasjonsregisteret</a>
+      <br />
+      <br />
+      <p><strong>Har du ikke fått SMS?</strong></p>
+      <p>Vent i 5 minutter og forsøk igjen. Om det ikke hjelper, ta kontakt med servicedesk</p>
+    </InfoBox>
+    <div class="section">
+      <p><strong>Når du har fått SMS:</strong></p>
+      <p>1. Sett nytt passord</p>
+      <p>2. Sett opp tofaktorautentisering*</p>
+    </div>
+    <div class="section">
+      <button class="bigmode" on:click={() => { entraLogin(resetPasswordResponse.userPrincipalName) }}>Klikk her når du har mottatt SMS</button>
       <!--<a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a>-->
       {#if entraLoading}
         <IconSpinner width="20px" />
       {/if}
-    </p>
-    <br />
-    <p>Når du har laget deg et nytt passord og satt opp tofaktorautentisering, er den nye brukeren din aktivert og klar til bruk. Ta kontakt med servicedesk dersom du trenger hjelp. </p>
+      {#if entraErrorMessage}
+        <div class="error">
+          <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
+          <p>{entraErrorMessage}</p>
+        </div>
+      {/if}
+    </div>
   {/if}
   <br>
-  <h4>Servicedesk</h4>
-  <p>Telefon: <a href="tel:{import.meta.env.VITE_SERVICEDESK_TLF.replaceAll(' ', '')}">{import.meta.env.VITE_SERVICEDESK_TLF}</a></p>
-  <p>E-post: <a href="mailto:{import.meta.env.VITE_SERVICEDESK_EPOST}">{import.meta.env.VITE_SERVICEDESK_EPOST}</a></p>
-  <br />
-  <p><i>* Tofaktorautentisering betyr at du bruker to faktorer (bevis) for å bekrefte identiteten din når du logger deg på.</i></p>
+  <InfoBox title="Trenger du hjelp?">
+    <p>Telefon: <a href="tel:{import.meta.env.VITE_SERVICEDESK_TLF.replaceAll(' ', '')}">{import.meta.env.VITE_SERVICEDESK_TLF}</a></p>
+    <p>E-post: <a href="mailto:{import.meta.env.VITE_SERVICEDESK_EPOST}">{import.meta.env.VITE_SERVICEDESK_EPOST}</a></p>
+  </InfoBox>
+  <div class="section">
+    <p><i>* Tofaktorautentisering betyr at du bruker to faktorer (bevis) for å bekrefte identiteten din når du logger deg på.</i></p>
+  </div>
 </div>
 
 
@@ -161,8 +154,19 @@
     font-style: italic;
     width: 200px;
   }
-  ul {
-    padding-left: 32px;
+  .bigmode {
+    border: 2px solid var(--himmel-70);
+    background-color: var(--himmel-10);
+    border-radius: 12px;
+    align-items: center;
+    padding: 16px;
+    font-size: 1.1em;
+  }
+  .bigmode:hover {
+    background-color: var(--himmel-30);
+  }
+  .section {
+    margin: 12px 0px;
   }
   .usernameContainer {
     display: flex;
@@ -192,4 +196,10 @@
     background-color: var(--nype-10);
     padding: 16px;
   }
+  @media only screen and (max-width: 768px) {
+        /* For mobile phones: */
+        .bigmode {
+            width: 100%;
+        }
+    }  
 </style>
