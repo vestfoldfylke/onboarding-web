@@ -1,8 +1,6 @@
 <script>
     // Props
     export let title
-    export let content
-
     export let open = false
 
 </script>
@@ -18,7 +16,7 @@
 
 <style>
     .infoBox {
-        background-color: var(--himmel-10);
+        background-color: var(--vann-10);
     }
     .title {
         border: 0px;
@@ -27,11 +25,11 @@
         width: 100%;
         display: flex;
         align-items: center;
-        background-color: var(--himmel-30);
+        background-color: var(--vann-20);
     }
     .title:hover {
         cursor: pointer;
-        background-color: var(--himmel-50);
+        background-color: var(--vann-40);
     }
     .content {
         padding: 12px;
