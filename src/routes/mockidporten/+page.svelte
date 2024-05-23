@@ -1,6 +1,12 @@
 <script>
+  import { page } from '$app/stores'
+
   const mockLogin = () => {
-    window.location.href = '/idportencallback?code=mockcode&iss=mockiss&state=mockstate'
+    const action = $page.url.searchParams.get('action')
+    if (!action) {
+      throw new Error('Mangler query param ACTION!')
+    }
+    window.location.href = `/idportencallback?code=mockcode&iss=mockiss&state=mock${action}`
     //goto('/idportencallback?code=mockcode&iss=mockiss&state=mockstate', { replaceState: false })
   }
 

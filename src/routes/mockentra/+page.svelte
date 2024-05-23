@@ -1,6 +1,19 @@
 <script>
+  import { page } from '$app/stores'
+
   const mockLogin = () => {
-    window.location.href = '/entracallback?code=mockcode&state=mockstate'
+    const action = $page.url.searchParams.get('action')
+    if (!action) {
+      throw new Error('Mangler query param ACTION!')
+    }
+    if (!['mfa', 'pwd'].includes(action)) {
+      throw new Error('query param action must be "mfa" or "pwd"')
+    }
+    if (action === 'mfa') {
+      window.location.href = '/entramfacallback?code=mockcode&state=mockstate'
+    } else if (action === 'pwd') {
+      window.location.href = '/entrapwdcallback?code=mockcode&state=mockstate'
+    }
   }
 
 </script>

@@ -1,11 +1,9 @@
 <script>
   import { onMount } from 'svelte'
-  import { resetPassword, getEntraLoginUrl } from '../../lib/useApi'
+  import { resetPassword, getEntraPwdLoginUrl } from '../../lib/useApi'
   import { page } from '$app/stores'
   import IconSpinner from '../../lib/components/Icons/IconSpinner.svelte'
   import { goto } from '$app/navigation'
-  import { fly } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
   import InfoBox from '../../lib/components/InfoBox.svelte';
 
   const sleep = (ms) => {
@@ -33,33 +31,21 @@
   let entraErrorMessage
   let entraLoading
 
-  const entraLogin = async (loginHint) => {
+  const entraLogin = async (loginHint, logEntryId) => {
     entraErrorMessage = null
-    if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
-      goto('/mockentra', { replaceState: false, invalidateAll: true })
-    } else {
-      try {
-        entraLoading = true
-        const { loginUrl } = await getEntraLoginUrl(loginHint)
-        entraLoading = false
-        window.location.href = loginUrl
-      } catch (error) {
-        entraLoading = false
-        entraErrorMessage = error.response?.data?.message || error.stack || error.toString()
-      }
+    try {
+      entraLoading = true
+      const { loginUrl } = await getEntraPwdLoginUrl(loginHint, logEntryId)
+      entraLoading = false
+      window.location.href = loginUrl
+    } catch (error) {
+      entraLoading = false
+      entraErrorMessage = error.response?.data?.message || error.stack || error.toString()
     }
   }
 
   // State
   let resetPasswordResponse
-  let showSnackbar = false
-
-  const copyUsername = async () => {
-    navigator.clipboard.writeText(resetPasswordResponse.userPrincipalName)
-    showSnackbar = true
-    await sleep(2750)
-    showSnackbar = false
-  }
 
   const resetPasswordForUser = async (code, iss, state) => {
     try {
@@ -102,7 +88,7 @@
       <p><strong>Brukernavn:</strong> {resetPasswordResponse.userPrincipalName}</p>
     </div>
     <div class="section">
-      <p><strong>Engangspassord sendt til:</strong> {resetPasswordResponse.maskedPhoneNumber}</p>
+      <p>Midlertidig passord er sendt til: {resetPasswordResponse.maskedPhoneNumber}</p>
     </div>
     <InfoBox title="Ikke fått SMS?">
       <p><strong>Er ikke dette ditt mobilnummer?</strong></p>
@@ -113,12 +99,12 @@
       <p>Vent i 5 minutter og forsøk igjen. Om det ikke hjelper, ta kontakt med servicedesk</p>
     </InfoBox>
     <div class="section">
-      <p><strong>Når du har fått SMS:</strong></p>
-      <p>1. Sett nytt passord</p>
-      <p>2. Sett opp tofaktorautentisering*</p>
+      <p><strong>Når du har fått SMS skal du:</strong></p>
+      <p>1. Sette nytt passord</p>
+      <p>2. Sette opp tofaktorautentisering*</p>
     </div>
     <div class="section">
-      <button class="bigmode" on:click={() => { entraLogin(resetPasswordResponse.userPrincipalName) }}>Klikk her når du har mottatt SMS</button>
+      <button class="big" on:click={() => { entraLogin(resetPasswordResponse.userPrincipalName, resetPasswordResponse.logEntryId) }}>Klikk her når du har mottatt SMS</button>
       <!--<a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a>-->
       {#if entraLoading}
         <IconSpinner width="20px" />
@@ -154,52 +140,11 @@
     font-style: italic;
     width: 200px;
   }
-  .bigmode {
-    border: 2px solid var(--himmel-70);
-    background-color: var(--himmel-10);
-    border-radius: 12px;
-    align-items: center;
-    padding: 16px;
-    font-size: 1.1em;
-  }
-  .bigmode:hover {
-    background-color: var(--himmel-30);
-  }
   .section {
     margin: 12px 0px;
-  }
-  .usernameContainer {
-    display: flex;
-    align-items: center;
-  }
-  .action, .snackbar {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    background-color: var(--himmel-30);
-    border-radius: 0px;
-    border: 0px solid;
-    font-weight: bold;
-    padding: 2px 6px;
-    margin-left: 4px;
-  }
-  .snackbar {
-    background-color: var(--korn-30);
-    font-weight: normal;
-    font-style: italic;
-    margin-left: 0px;
-  }
-  .action:hover {
-    background-color: var(--himmel-50);
   }
   .error {
     background-color: var(--nype-10);
     padding: 16px;
   }
-  @media only screen and (max-width: 768px) {
-        /* For mobile phones: */
-        .bigmode {
-            width: 100%;
-        }
-    }  
 </style>

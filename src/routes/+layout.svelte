@@ -1,11 +1,11 @@
 <script>
   import '../app.css' // Add global css (and make it hot reload)
   import logo from '$lib/assets/logo.png'
-  import { getLogoutUrl } from '../lib/useApi'
+  import { getIdportenLogoutUrl } from '../lib/useApi'
   import { goto } from '$app/navigation'
 
   const logout = async () => {
-    const { logoutUrl } = await getLogoutUrl()
+    const { logoutUrl } = await getIdportenLogoutUrl()
     window.location.href = logoutUrl
   }
 
@@ -21,7 +21,7 @@
     <a href="/" title="Gå til forsiden" class="appTitle"><h1>{appTitle}</h1></a>
     <div class="topbarOptions">
       <button class="link" on:click={logout}><span class="material-symbols-outlined">logout</span>Hjem / Logg ut</button>
-      <button class="link" on:click={() => { goto('/help', { replaceState: false }) }}><span class="material-symbols-outlined">help</span>Hjelp</button>
+      <button class="link" on:click={() => { goto('/help') } }><span class="material-symbols-outlined">help</span>Hjelp</button>
     </div>
   </div>
 </div>
