@@ -31,6 +31,8 @@
     .card {
         /* Add shadows to create the "card" effect */
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        /* border: 2px solid var(--himmel-30); */
+        /* background-color: var(--himmel-10); */
         transition: 0.3s;
         border-radius: 1rem;
         margin: 1rem;
@@ -47,6 +49,7 @@
     .card:hover {
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
         background: linear-gradient(rgb(255, 255, 255), rgb(178, 203, 207));
+        /* background-color: var(--himmel-30); */
         cursor: pointer;
     }
 
