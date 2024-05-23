@@ -6,21 +6,38 @@ const sleep = (ms) => {
   })
 }
 
-export const getLoginUrl = async (userType) => {
-  const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/LoginUrl?userType=${userType}`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+export const getIdPortenLoginUrl = async (userType, action) => {
+  if (!(userType && action)) throw new Error('Missing required paramteres "userType" and "action"')
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    return { loginUrl: `/mockidporten?user_type=${userType}&action=${action}` }
+  }
+  const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/IdPortenLoginUrl?user_type=${userType}&action=${action}`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
   return data
 }
 
-export const getEntraLoginUrl = async (loginHint) => {
-  const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraLoginUrl?login_hint=${loginHint}`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+export const getEntraPwdLoginUrl = async (loginHint, logEntryId) => {
+  if (!logEntryId) throw new Error('Missing required paramteres "logEntryId"')
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    return { loginUrl: `/mockentra?loginHint=demodemo&log_entry_id=${logEntryId}&action=pwd` }
+  }
+  const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraPwdLoginUrl?login_hint=${loginHint}&log_entry_id=${logEntryId}`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
   return data
 }
 
-export const getLogoutUrl = async () => {
+export const getEntraMfaLoginUrl = async (loginHint, logEntryId) => {
+  if (!logEntryId) throw new Error('Missing required paramteres "logEntryId"')
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    return { loginUrl: `/mockentra?loginHint=demodemo&log_entry_id=${logEntryId}&action=mfa` }
+  }
+  const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraMfaLoginUrl?login_hint=${loginHint}&log_entry_id=${logEntryId}`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  return data
+}
+
+export const getIdportenLogoutUrl = async () => {
   if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
     return { logoutUrl: '/' }
   }
-  const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/LogoutUrl`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/IdPortenLogoutUrl`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
   return data
 }
 
@@ -28,6 +45,7 @@ export const resetPassword = async (code, iss, state) => {
   if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
     await sleep(1000)
     return {
+      logEntryId: 'ijijiji',
       displayName: 'Mock Trynefjert',
       userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no',
       maskedPhoneNumber: '+47 *****123'
@@ -37,14 +55,41 @@ export const resetPassword = async (code, iss, state) => {
   return data
 }
 
-export const entraAuth = async (code, state) => {
+export const verifyUser = async (code, iss, state) => {
   if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
     await sleep(1000)
     return {
+      logEntryId: 'jijijijiji',
+      displayName: 'Mock Trynefjert',
+      userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no'
+    }
+  }
+  const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/VerifyUser`, { code, iss, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  return data
+}
+
+export const entraPwdAuth = async (code, state) => {
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    await sleep(1000)
+    return {
+      logEntryId: 'jfiji',
       displayName: 'Mock Trynefjert',
       userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no',
     }
   }
-  const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraAuth`, { code, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraPwdAuth`, { code, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  return data
+}
+
+export const entraMfaAuth = async (code, state) => {
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    await sleep(1000)
+    return {
+      logEntryId: 'jfiji',
+      displayName: 'Mock Trynefjert',
+      userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no',
+    }
+  }
+  const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraMfaAuth`, { code, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
   return data
 }
