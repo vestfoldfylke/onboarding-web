@@ -13,7 +13,7 @@
     errorMessage = null
     if (confirmation) {
       try {
-        loading = true
+        loading = action
         const { loginUrl } = await getIdPortenLoginUrl('ansatt', action)
         loading = false
         window.location.href = loginUrl
@@ -39,8 +39,8 @@
     </div>
   {/if}
   <div class="centerstuff">
-    <CardButton header={'Verifiser bruker'} imgPath={verified} imgAlt={'Ikon bilde av en nøkkel'} gotoPath={''} paragraph={'Krever pålogging med MinID eller BankID'} boolValue={false} {loading} func={() => redirect('verifyuser')}/>
-    <CardButton header={'Tilbakestill passord'} imgPath={key} imgAlt={'Ikon bilde av en nøkkel'} gotoPath={''} paragraph={'Krever pålogging med MinID eller BankID, deretter vil du få et engangspassord på sms'} boolValue={false} {loading} func={() => redirect('resetpassword')}/>
+    <CardButton header={'Verifiser bruker'} imgPath={verified} imgAlt={'Ikon bilde av en nøkkel'} gotoPath={''} paragraph={'Krever pålogging med MinID eller BankID'} boolValue={false} loading={loading === 'verifyuser'} func={() => redirect('verifyuser')}/>
+    <CardButton header={'Tilbakestill passord'} imgPath={key} imgAlt={'Ikon bilde av en nøkkel'} gotoPath={''} paragraph={'Krever pålogging med MinID eller BankID, deretter vil du få et engangspassord på sms'} boolValue={false} loading={loading === 'resetpassword'} func={() => redirect('resetpassword')}/>
   </div>
 </main>
 
