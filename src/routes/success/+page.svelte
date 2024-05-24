@@ -1,11 +1,11 @@
 <script>
   import { onMount } from 'svelte'
-  import { entraAuth } from '../../lib/useApi'
+  import { entraMfaAuth } from '../../lib/useApi'
   import { page } from '$app/stores'
   import IconSpinner from '../../lib/components/Icons/IconSpinner.svelte'
   import { goto } from '$app/navigation'
-  import { fly } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
+  import InfoBox from '../../lib/components/InfoBox.svelte'
+  import computerKid from '$lib/assets/thumbs.gif'
 
   const sleep = (ms) => {
     return new Promise((resolve) => {
@@ -22,6 +22,7 @@
     await sleep(interval)
     loadingMessage = "Verfiserer fortsatt innlogging"
   }
+
   // Entra logout
   let entraErrorMessage
   let entraLoading
@@ -31,9 +32,7 @@
 
   const entraAuthentication = async (code, state) => {
     try {
-      entraResponse = await entraAuth(code, state)
-      // Oi shit, vi må redirecte igjen...
-      window.location.href = 'https://portal.office.com'
+      entraResponse = await entraMfaAuth(code, state)
     } catch (error) {
       const errorMsg =  error.response?.data?.message || error.stack || error.toString()
       entraResponse = { hasError: true, message: errorMsg }
@@ -57,7 +56,7 @@
 </script>
 
 <div>
-  {#if !entraResponse || !entraResponse.hasError}
+  {#if !entraResponse}
     <div class="loading">
       <IconSpinner />
       <p class="loadingMessage">{loadingMessage}...</p>
@@ -66,32 +65,22 @@
     <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
     <div class="error">{entraResponse.message}</div>
   {:else}
-    <h3>Hei igjen, {entraResponse.displayName}</h3>
-    <br />
-    <br />
-    <p>Din bruker er nå satt opp og klar til bruk 👍</p>
-    <br />
-    <p>Ditt brukernavn er: <strong>{entraResponse.userPrincipalName}</strong></p>
-    <!-- Hvis man ønsker logout feks
-    {#if entraErrorMessage}
-      <div class="error">
-        <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
-        <p>{entraErrorMessage}</p>
-      </div>
-    {/if}
-    <p>
-      <button class="link" on:click={() => { console.log('hei') }}><span class="material-symbols-outlined">logout</span>TUT TUT</button>
-      {#if entraLoading}
-        <IconSpinner width="20px" />
-      {/if}
-    </p>
-    -->
+    <h3>Hei, {entraResponse.displayName}</h3>
+    <div class="section">
+      <p><strong>Brukernavn:</strong> {entraResponse.userPrincipalName}</p>
+    </div>
+    <div class="section">
+      <p>✅ Kontoen din er nå klar til bruk</p>
+    </div>
+    <div class="section">
+      <img alt="Thumbs up kid" src={computerKid} />
+    </div>
   {/if}
-  <br>
-  <h4>Servicedesk</h4>
-  <p>Telefon: <a href="tel:{import.meta.env.VITE_SERVICEDESK_TLF.replaceAll(' ', '')}">{import.meta.env.VITE_SERVICEDESK_TLF}</a></p>
-  <p>E-post: <a href="mailto:{import.meta.env.VITE_SERVICEDESK_EPOST}">{import.meta.env.VITE_SERVICEDESK_EPOST}</a></p>
   <br />
+  <InfoBox title="Trenger du hjelp?">
+    <p>Telefon: <a href="tel:{import.meta.env.VITE_SERVICEDESK_TLF.replaceAll(' ', '')}">{import.meta.env.VITE_SERVICEDESK_TLF}</a></p>
+    <p>E-post: <a href="mailto:{import.meta.env.VITE_SERVICEDESK_EPOST}">{import.meta.env.VITE_SERVICEDESK_EPOST}</a></p>
+  </InfoBox>
 </div>
 
 
@@ -103,36 +92,12 @@
     width: 100%;
     justify-content: center;
   }
+  .section {
+    margin: 12px 0px;
+  }
   .loadingMessage {
     font-style: italic;
     width: 200px;
-  }
-  ul {
-    padding-left: 32px;
-  }
-  .usernameContainer {
-    display: flex;
-    align-items: center;
-  }
-  .action, .snackbar {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    background-color: var(--himmel-30);
-    border-radius: 0px;
-    border: 0px solid;
-    font-weight: bold;
-    padding: 2px 6px;
-    margin-left: 4px;
-  }
-  .snackbar {
-    background-color: var(--korn-30);
-    font-weight: normal;
-    font-style: italic;
-    margin-left: 0px;
-  }
-  .action:hover {
-    background-color: var(--himmel-50);
   }
   .error {
     background-color: var(--nype-10);
