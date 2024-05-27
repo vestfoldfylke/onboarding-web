@@ -124,7 +124,7 @@
     <p>E-post: <a href="mailto:{import.meta.env.VITE_SERVICEDESK_EPOST}">{import.meta.env.VITE_SERVICEDESK_EPOST}</a></p>
   </InfoBox>
   <div class="section">
-    <p><i><strong>*</strong> Bruk SMS-passord som "gammelt passord"</i></p>
+    <p><i><strong>*</strong> Bruk SMS-passord som "Nåværende passord"</i></p>
   </div>
   <div class="section">
     <p><i><strong>**</strong> Tofaktorautentisering betyr at du bruker to faktorer (bevis) for å bekrefte identiteten din når du logger deg på.</i></p>
