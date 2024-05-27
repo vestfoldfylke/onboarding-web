@@ -100,8 +100,9 @@
     </InfoBox>
     <div class="section">
       <p><strong>Når du har fått SMS skal du:</strong></p>
-      <p>1. Sette nytt passord</p>
-      <p>2. Sette opp tofaktorautentisering*</p>
+      <p>1. Logge på med passord fra SMS</p>
+      <p>2. Sette nytt passord<strong>*</strong></p>
+      <p>3. Sette opp tofaktorautentisering<strong>**</strong></p>
     </div>
     <div class="section">
       <button class="big" on:click={() => { entraLogin(resetPasswordResponse.userPrincipalName, resetPasswordResponse.logEntryId) }}>Klikk her når du har mottatt SMS</button>
@@ -123,7 +124,10 @@
     <p>E-post: <a href="mailto:{import.meta.env.VITE_SERVICEDESK_EPOST}">{import.meta.env.VITE_SERVICEDESK_EPOST}</a></p>
   </InfoBox>
   <div class="section">
-    <p><i>* Tofaktorautentisering betyr at du bruker to faktorer (bevis) for å bekrefte identiteten din når du logger deg på.</i></p>
+    <p><i><strong>*</strong> Bruk SMS-passord som "gammelt passord"</i></p>
+  </div>
+  <div class="section">
+    <p><i><strong>**</strong> Tofaktorautentisering betyr at du bruker to faktorer (bevis) for å bekrefte identiteten din når du logger deg på.</i></p>
   </div>
 </div>
 
