@@ -19,11 +19,6 @@
 </script>
 
 <main>
-  <!--
-  <div class="centerstuff">
-    <p><strong>MERK:</strong> SMS med engangspassord vil bli sendt til telefonnummeret du har registrert i kontakt og reservasjons-registeret. Sjekk hva du har registrert i kontakt og reservasjons-registeret her: <a href="https://minprofil.kontaktregisteret.no" target="_blank">minprofil.kontaktregisteret.no</a></p>
-  </div>
-  -->
   {#if errorMessage}
     <div class="error">
       <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
