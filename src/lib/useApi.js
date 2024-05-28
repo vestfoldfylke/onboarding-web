@@ -9,6 +9,7 @@ const sleep = (ms) => {
 export const getIdPortenLoginUrl = async (userType, action) => {
   if (!(userType && action)) throw new Error('Missing required paramteres "userType" and "action"')
   if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    await sleep(2000)
     return { loginUrl: `/mockidporten?user_type=${userType}&action=${action}` }
   }
   const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/IdPortenLoginUrl?user_type=${userType}&action=${action}`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
@@ -30,6 +31,14 @@ export const getEntraMfaLoginUrl = async (loginHint, logEntryId) => {
     return { loginUrl: `/mockentra?loginHint=demodemo&log_entry_id=${logEntryId}&action=mfa` }
   }
   const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraMfaLoginUrl?login_hint=${loginHint}&log_entry_id=${logEntryId}`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  return data
+}
+
+export const getStatsLoginUrl = async () => {
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    return { loginUrl: `/mockentra?action=stats` }
+  }
+  const { data } = await axios.get(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraMfaLoginUrl?action=stats`, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
   return data
 }
 
@@ -91,5 +100,16 @@ export const entraMfaAuth = async (code, state) => {
     }
   }
   const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraMfaAuth`, { code, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  return data
+}
+
+export const getStats = async (code, state) => {
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    await sleep(1000)
+    return {
+      message: 'ROBIN, her kan du lage mock-data som har samme format som api-et gir tilbake på UserStats, bare husk å ikke bruke reelle data, men det vet du jo'
+    }
+  }
+  const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/UserStats`, { code, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
   return data
 }
