@@ -12,8 +12,12 @@
       console.log('De er ikke der, slutt å kødde')
       throw new Error('SLUTT med det')
     }
-    // set state and goto resetpassord
-    goto('/success', { state: { code, state } })
+    // check state and goto corresponding site
+    if (state.startsWith('stats')) {
+      goto('/stats', { state: { code, state } })
+    } else {
+      goto('/success', { state: { code, state } })
+    }
   })
 
 </script>

@@ -6,13 +6,15 @@
     if (!action) {
       throw new Error('Mangler query param ACTION!')
     }
-    if (!['mfa', 'pwd'].includes(action)) {
-      throw new Error('query param action must be "mfa" or "pwd"')
+    if (!['mfa', 'pwd', 'stats'].includes(action)) {
+      throw new Error('query param action must be "mfa" or "pwd" or "stats"')
     }
     if (action === 'mfa') {
       window.location.href = '/entramfacallback?code=mockcode&state=mockstate'
     } else if (action === 'pwd') {
       window.location.href = '/entrapwdcallback?code=mockcode&state=mockstate'
+    } else if (action === 'stats') {
+      window.location.href = '/entramfacallback?code=mockcode&state=statsguidfuidjuid'
     }
   }
 
