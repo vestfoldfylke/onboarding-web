@@ -12,6 +12,9 @@
     })
   }
 
+  let infoModal
+  let countDown = 15
+
   let loadingMessage = "Verifiserer ID-porten pålogging"
 
   const fakeLoadingMessages = async () => {
@@ -32,6 +35,10 @@
   let entraLoading
 
   const entraLogin = async (loginHint, logEntryId) => {
+    infoModal.showModal()
+    for (countDown; countDown > 0; countDown--) {
+      await sleep(1000)
+    }
     entraErrorMessage = null
     try {
       entraLoading = true
@@ -107,6 +114,19 @@
     <div class="section">
       <button class="big" on:click={() => { entraLogin(resetPasswordResponse.userPrincipalName, resetPasswordResponse.logEntryId) }}>Klikk her når du har mottatt SMS</button>
       <!--<a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a>-->
+      <dialog bind:this={infoModal}>
+        <form method="dialog">
+            <div class="modalContent">
+              <div>
+                <h2 class="modalTitle">VIKTIG!</h2>
+                <p><strong>Steg 1:</strong> Logg på med passord fra SMS</p>
+                <p><strong>Steg 2:</strong> Husk at "Nåværende passord" er passord fra SMS</p>
+                <br />
+              </div>
+              <p><i>Sender deg videre om {countDown} sekunder</i></p>
+          </div>
+        </form>
+      </dialog>
       {#if entraLoading}
         <IconSpinner width="20px" />
       {/if}
@@ -150,5 +170,17 @@
   .error {
     background-color: var(--nype-10);
     padding: 16px;
+  }
+  .modalContent {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .modalTitle {
+    margin-bottom: 8px;
+  }
+  form {
+    height: 100%;
   }
 </style>
