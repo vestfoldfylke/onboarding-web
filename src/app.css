@@ -144,6 +144,7 @@ button.link:hover {
 }
 
 dialog {
+	min-height: 230px;
 	margin: auto;
 	border: none;
 	padding: 32px
