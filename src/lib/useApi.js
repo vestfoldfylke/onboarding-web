@@ -106,9 +106,50 @@ export const entraMfaAuth = async (code, state) => {
 export const getStats = async (code, state) => {
   if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
     await sleep(1000)
-    return {
-      message: 'ROBIN, her kan du lage mock-data som har samme format som api-et gir tilbake på UserStats, bare husk å ikke bruke reelle data, men det vet du jo'
-    }
+    return [
+      {
+        navn: 'Seksjon1',
+        antall: 300,
+        max: 500,
+        fullføringsgrad: 60
+      },
+      {
+        navn: 'Skejson2',
+        antall: 250,
+        max: 300,
+        fullføringsgrad: 90
+      }, 
+      {
+        navn: 'Skole1',
+        antall: {
+          ansatt: {
+            antall: 250,
+            max: 300,
+            fullføringsgrad: 30
+          }, 
+          elev: {
+            antall: 250,
+            max: 300,
+            fullføringsgrad: 40
+          }
+        }
+      },
+      {
+        navn: 'Skole2',
+        antall: {
+          ansatt: {
+            antall: 45,
+            max: 50,
+            fullføringsgrad: 99
+          }, 
+          elev: {
+            antall: 80,
+            max: 170,
+            fullføringsgrad: 69
+          }
+        }
+      }
+    ]
   }
   const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/UserStats`, { code, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
   return data
