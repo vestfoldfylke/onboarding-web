@@ -5,7 +5,6 @@
   import IconSpinner from '../../lib/components/Icons/IconSpinner.svelte'
   import { goto } from '$app/navigation'
   import InfoBox from '../../lib/components/InfoBox.svelte';
-  import { getAssets } from '../../lib/useApi'
   import Chart from 'chart.js/auto';
   import ChartDataLabels from 'chartjs-plugin-datalabels'
 
@@ -65,7 +64,6 @@
 
   afterUpdate(async () => {
     // Define the chart
-    const { data } = await getAssets()
     const ctx = document.getElementById('chart');
     
     const calculate = (dataIndex, dataSet, value2) => {
