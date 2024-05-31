@@ -24,16 +24,25 @@
 
   // State
   let userStatsResponse
+  let userStatsResponseFull
   let showTableState = false
   let showChartState = true
 
-  const getUserStats = async (code, state) => {
+  const getUserStats = async (code, state, onlyStats) => {
     try {
-      userStatsResponse = await getStats(code, state)
-      // ROBIN, gjør det du vil med responsen
+      userStatsResponse = await getStats(code, state, onlyStats)
     } catch (error) {
       const errorMsg =  error.response?.data?.message || error.stack || error.toString()
       userStatsResponse = { hasError: true, message: errorMsg }
+    }
+  }
+
+  const getUserStatsFull = async (code, state, onlyStats) => {
+    try {
+      userStatsResponseFull = await getStats(code, state, onlyStats)
+    } catch (error) {
+      const errorMsg =  error.response?.data?.message || error.stack || error.toString()
+      userStatsResponseFull = { hasError: true, message: errorMsg }
     }
   }
 
@@ -47,6 +56,34 @@
     showTableState = true
   }
 
+  const downloadCsv = () => {
+    // Create a csv file from an array of objects where to keys are the headers and the values are the data
+    const headers = Object.keys(userStatsResponseFull[0])
+    //  Wrap the values in quotes to avoid commas in the values to be interpreted as a new column. This will not affect the csv file or importing it to excel.
+    const rows = userStatsResponseFull.map(row => headers.map(header => `"${row[header]}"`))
+    const csvData = [headers, ...rows].map(row => {
+     const rowString = row.join(',')
+     return rowString.endsWith(',') ? rowString.slice(0, -1) : rowString
+    }).join('\n')
+
+    // Get date
+    const today = new Date()
+    // Padstart to makes sure we get a 2 digit number, it looks better.
+    const day = String(today.Date()).padStart(2, '0')
+    const month = String(today.getMonth() + 1).padStart(2, '0')
+    const year = today.getFullYear()
+
+    const date = `${day}-${month}-${year}`
+
+    // Create a blob and download the file
+    const blob = new Blob([csvData], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${date}-statistikk.csv`
+    link.click()
+  }
+
   onMount(async () => {
     // States
     const code = $page.state.code
@@ -57,7 +94,8 @@
       // Hvis de ikke er der, kan vi vel sende til forsiden egt
       goto('/admin', { replaceState: false })
     } else {
-      getUserStats(code, state)
+      getUserStats(code, state, true)
+      getUserStatsFull(code, state, false)
       fakeLoadingMessages()
     }
   })
@@ -80,11 +118,11 @@
       let total = 0
       const data = userStatsResponse.find(s => s.navn === tooltipItems[0].label)
       if(tooltipItems[0].dataset.label.includes('Ansatt')) {
-        percentage = data.antall?.ansatt?.fullføringsgrad || data.fullføringsgrad
-        total = data.antall?.ansatt?.max || data.max
+        percentage = data.ansatt?.fullføringsgrad || data.fullføringsgrad
+        total = data.ansatt?.max || data.max
       } else {
-        percentage = data.antall?.elev?.fullføringsgrad || data.fullføringsgrad
-        total = data.antall?.elev?.max || data.max
+        percentage = data.elev?.fullføringsgrad || data.fullføringsgrad
+        total = data.elev?.max || data.max
       }
       return  'Fullføringsgrad: ' + percentage + '%' + '\n' + 'Totalt: ' + total
     }
@@ -223,15 +261,17 @@
     Chart.register(ChartDataLabels);
     // map data from data set to chart
     chart.data.labels = userStatsResponse.map(n => n.navn)
-    // Administrasjon
-    chart.data.datasets[0].data = userStatsResponse.map(n => n.antall)
-    chart.data.datasets[1].data = userStatsResponse.map(n => n.max - n.antall)
-    // Skoler, elever
-    chart.data.datasets[2].data = userStatsResponse.map(n => n.antall?.elev?.antall)
-    chart.data.datasets[3].data = userStatsResponse.map(n => n.antall?.elev?.max - n.antall?.elev?.antall)
-    // Skoler, ansatte
-    chart.data.datasets[4].data = userStatsResponse.map(n => n.antall?.ansatt?.antall)
-    chart.data.datasets[5].data = userStatsResponse.map(n => n.antall?.ansatt?.max - n.antall?.ansatt?.antall)
+    // Administrasjon dataset
+    if(userStatsResponse.elev === null) {
+      chart.data.datasets[0].data = userStatsResponse.map(n => n.ansatt?.antall)
+      chart.data.datasets[1].data = userStatsResponse.map(n => n.max - n.ansatt?.antall)
+    }
+    // Skoler, elever dataset
+    chart.data.datasets[2].data = userStatsResponse.map(n => n.elev?.antall)
+    chart.data.datasets[3].data = userStatsResponse.map(n => n.elev?.max - n.elev?.antall)
+    // Skoler, ansatte dataset
+    chart.data.datasets[4].data = userStatsResponse.map(n => n.ansatt?.antall)
+    chart.data.datasets[5].data = userStatsResponse.map(n => n.ansatt?.max - n.ansatt?.antall)
     chart.update();
   })
 
@@ -285,21 +325,24 @@
             {#each Object.values(userStatsResponse) as row}
               <tr>
                   <td>{row.navn}</td>
-                  <td>{row.antall?.elev?.antall === undefined ? 0 : row.antall?.elev?.antall}</td>
-                  <td>{row.antall?.ansatt?.antall || row.antall}</td>
-                  <td>{((row.antall?.elev?.antall === undefined ? 0 : row.antall?.elev?.antall) + (row.antall?.ansatt?.antall || row.antall)) }</td>
-                  <td>{(row.antall?.elev?.max === undefined ? 0 : row.antall?.elev?.max)}</td>
-                  <td>{(row.antall?.ansatt?.max || row.max)}</td>
-                  <td>{((row.antall?.elev?.max === undefined ? 0 : row.antall?.elev?.max) - (row.antall?.elev?.antall === undefined ? 0 : row.antall?.elev?.antall))}</td>
-                  <td>{((row.antall?.ansatt?.max || row.max) - (row.antall?.ansatt?.antall || row.antall))}</td>
-                  <td>{row.antall?.elev?.fullføringsgrad === undefined ? 0 : row.antall?.elev?.fullføringsgrad}%</td>
-                  <td>{row.antall?.ansatt?.fullføringsgrad || row.fullføringsgrad}%</td>
+                  <td>{row.elev?.antall === undefined ? 0 : row.elev?.antall}</td>
+                  <td>{row.ansatt?.antall || row.antall}</td>
+                  <td>{((row.elev?.antall === undefined ? 0 : row.elev?.antall) + (row.ansatt?.antall || row.antall)) }</td>
+                  <td>{(row.elev?.max === undefined ? 0 : row.elev?.max)}</td>
+                  <td>{(row.ansatt?.max || row.max)}</td>
+                  <td>{((row.elev?.max === undefined ? 0 : row.elev?.max) - (row.elev?.antall === undefined ? 0 : row.elev?.antall))}</td>
+                  <td>{((row.ansatt?.max || row.max) - (row.ansatt?.antall || row.antall))}</td>
+                  <td>{row.elev?.fullføringsgrad === undefined ? 0 : row.elev?.fullføringsgrad}%</td>
+                  <td>{row.ansatt?.fullføringsgrad || row.fullføringsgrad}%</td>
               </tr>
             {/each}
           </tbody>
         </table>
         </div>
       {/if}
+      <div class="centerstuff">
+        <button on:click={() => { downloadCsv() } }><span class="material-symbols-outlined">csv</span>Last ned CSV-fil</button>
+      </div>
     </main>
   {/if}
 </div>
