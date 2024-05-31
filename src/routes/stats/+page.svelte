@@ -25,12 +25,18 @@
   // State
   let userStatsResponse
   let userStatsResponseFull
+  let userStatsResponseColne
+  let userStatsResponseSchools
+  let userStatsResponseAdmin
   let showTableState = false
   let showChartState = true
 
   const getUserStats = async (code, state, onlyStats) => {
     try {
       userStatsResponse = await getStats(code, state, onlyStats)
+      userStatsResponseColne = userStatsResponse
+      userStatsResponseSchools = userStatsResponse.filter(obj => obj.navn.includes("skole"))
+      userStatsResponseAdmin = userStatsResponse.filter(obj => !obj.navn.includes("skole"))
     } catch (error) {
       const errorMsg =  error.response?.data?.message || error.stack || error.toString()
       userStatsResponse = { hasError: true, message: errorMsg }
@@ -52,8 +58,21 @@
   }
 
   const showTable = () => {
+    userStatsResponse = userStatsResponseColne
     showChartState = false
     showTableState = true
+  }
+
+  const showOnlySchools = () => {
+    userStatsResponse = userStatsResponseSchools
+  }
+
+  const showOnlyAdmin = () => {
+    userStatsResponse = userStatsResponseAdmin
+  }
+
+  const showAll = () => {
+    userStatsResponse = userStatsResponseColne
   }
 
   const downloadCsv = () => {
@@ -298,51 +317,60 @@
         <button on:click={() => { showChart() } }><span class="material-symbols-outlined">bar_chart</span>Vis Graf</button>
       </div>
       <br>
+      <div class="centerstuff">
+        <button on:click={() => { showOnlySchools() } }><span class="material-symbols-outlined">school</span>Vis Skoler</button>
+        <button on:click={() => { showOnlyAdmin() } }><span class="material-symbols-outlined">badge</span>Vis Administrasjon</button>
+        <button on:click={() => { showAll() } }><span class="material-symbols-outlined">bar_chart</span>Vis Alt</button>
+      </div>
       {#if showChartState}
-      <!-- Empty div around the canvas to stop it from growing -->
-        <div> 
-          <canvas id="chart"></canvas>
-        </div>
+        <!-- Empty div around the canvas to stop it from growing -->
+        {#key userStatsResponse}
+          <div> 
+            <canvas id="chart"></canvas>
+          </div>
+        {/key}
       {/if}
       {#if showTableState}
-      <div class="centerstuff">
-        <table>
-          <thead>
-            <tr>
-              <th>Skole/Seksjon</th>
-              <th>Antall Elever fullført</th>
-              <th>Antall Ansatte fullført</th>
-              <th>Antall Totalt fullført</th>
-              <th>Antall Elever</th>
-              <th>Antall Ansatte</th>
-              <th>Antall Ikke fullført Elever</th>
-              <th>Antall Ikke fullført Ansatte</th>
-              <th>Fullføringsgrad Elever</th>
-              <th>Fullføringsgrad Ansatte</th>
-            <tr/>
-          </thead>
-          <tbody>
-            {#each Object.values(userStatsResponse) as row}
-              <tr>
-                  <td>{row.navn}</td>
-                  <td>{row.elev?.antall === undefined ? 0 : row.elev?.antall}</td>
-                  <td>{row.ansatt?.antall || row.antall}</td>
-                  <td>{((row.elev?.antall === undefined ? 0 : row.elev?.antall) + (row.ansatt?.antall || row.antall)) }</td>
-                  <td>{(row.elev?.max === undefined ? 0 : row.elev?.max)}</td>
-                  <td>{(row.ansatt?.max || row.max)}</td>
-                  <td>{((row.elev?.max === undefined ? 0 : row.elev?.max) - (row.elev?.antall === undefined ? 0 : row.elev?.antall))}</td>
-                  <td>{((row.ansatt?.max || row.max) - (row.ansatt?.antall || row.antall))}</td>
-                  <td>{row.elev?.fullføringsgrad === undefined ? 0 : row.elev?.fullføringsgrad}%</td>
-                  <td>{row.ansatt?.fullføringsgrad || row.fullføringsgrad}%</td>
-              </tr>
-            {/each}
-          </tbody>
-        </table>
-        </div>
+        {#key userStatsResponse}
+          <div class="centerstuff">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skole/Seksjon</th>
+                  <th>Antall Elever fullført</th>
+                  <th>Antall Ansatte fullført</th>
+                  <th>Antall Totalt fullført</th>
+                  <th>Antall Elever</th>
+                  <th>Antall Ansatte</th>
+                  <th>Antall Ikke fullført Elever</th>
+                  <th>Antall Ikke fullført Ansatte</th>
+                  <th>Fullføringsgrad Elever</th>
+                  <th>Fullføringsgrad Ansatte</th>
+                <tr/>
+              </thead>
+              <tbody>
+                {#each Object.values(userStatsResponse) as row}
+                  <tr>
+                      <td>{row.navn}</td>
+                      <td>{row.elev?.antall === undefined ? 0 : row.elev?.antall}</td>
+                      <td>{row.ansatt?.antall || row.antall}</td>
+                      <td>{((row.elev?.antall === undefined ? 0 : row.elev?.antall) + (row.ansatt?.antall || row.antall)) }</td>
+                      <td>{(row.elev?.max === undefined ? 0 : row.elev?.max)}</td>
+                      <td>{(row.ansatt?.max || row.max)}</td>
+                      <td>{((row.elev?.max === undefined ? 0 : row.elev?.max) - (row.elev?.antall === undefined ? 0 : row.elev?.antall))}</td>
+                      <td>{((row.ansatt?.max || row.max) - (row.ansatt?.antall || row.antall))}</td>
+                      <td>{row.elev?.fullføringsgrad === undefined ? 0 : row.elev?.fullføringsgrad}%</td>
+                      <td>{row.ansatt?.fullføringsgrad || row.fullføringsgrad}%</td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          </div>
+        {/key}
       {/if}
-      <div class="centerstuff">
-        <button on:click={() => { downloadCsv() } }><span class="material-symbols-outlined">csv</span>Last ned CSV-fil</button>
-      </div>
+        <div class="centerstuff">
+          <button on:click={() => { downloadCsv() } }><span class="material-symbols-outlined">csv</span>Last ned CSV-fil</button>
+        </div>
     </main>
   {/if}
 </div>
