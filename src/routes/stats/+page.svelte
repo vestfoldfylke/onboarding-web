@@ -66,22 +66,21 @@
      return rowString.endsWith(',') ? rowString.slice(0, -1) : rowString
     }).join('\n')
 
-    // // Get date
-    // const today = new Date()
-    // // Padstart to makes sure we get a 2 digit number, it looks better.
-    // const day = String(today.Date()).padStart(2, '0')
-    // const month = String(today.getMonth() + 1).padStart(2, '0')
-    // const year = today.getFullYear()
+    // Get date
+    const today = new Date()
+    // Padstart to makes sure we get a 2 digit number, it looks better.
+    const day = String(today.getDate()).padStart(2, '0')
+    const month = String(today.getMonth() + 1).padStart(2, '0')
+    const year = today.getFullYear()
 
-    // const date = `${day}-${month}-${year}`
+    const date = `${day}-${month}-${year}`
 
     // Create a blob and download the file
     const blob = new Blob([csvData], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    // link.download = `${date}-statistikk.csv`
-    link.download = 'statistikk.csv'
+    link.download = `${date}-statistikk.csv`
     link.click()
   }
 
