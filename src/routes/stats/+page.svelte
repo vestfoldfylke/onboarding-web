@@ -35,8 +35,8 @@
     try {
       userStatsResponse = await getStats(code, state, onlyStats)
       userStatsResponseColne = userStatsResponse
-      userStatsResponseSchools = userStatsResponse.filter(obj => obj.navn.includes("skole"))
-      userStatsResponseAdmin = userStatsResponse.filter(obj => !obj.navn.includes("skole"))
+      userStatsResponseSchools = userStatsResponse.filter(obj => obj.navn.includes("skole") || obj.navn.includes("Kompetansebyggeren"))
+      userStatsResponseAdmin = userStatsResponse.filter(obj => !obj.navn.includes("skole") || !obj.navn.includes("Kompetansebyggeren"))
     } catch (error) {
       const errorMsg =  error.response?.data?.message || error.stack || error.toString()
       userStatsResponse = { hasError: true, message: errorMsg }
@@ -245,7 +245,7 @@
             borderWidth: 1,
             stack: 'Stack 0', // groups
           }
-        ]
+        ],
       },
       options: {
         scales: {
@@ -281,6 +281,7 @@
     // map data from data set to chart
     chart.data.labels = userStatsResponse.map(n => n.navn)
     // Administrasjon dataset
+    console.log(userStatsResponse)
     if(userStatsResponse.elev === null) {
       chart.data.datasets[0].data = userStatsResponse.map(n => n.ansatt?.antall)
       chart.data.datasets[1].data = userStatsResponse.map(n => n.max - n.ansatt?.antall)
@@ -399,7 +400,7 @@
     padding: 16px;
   }
   #chart {
-    height: 100% !important;
+    height: 2000px !important;
     width: 100% !important;
   }
   table, th, td {
