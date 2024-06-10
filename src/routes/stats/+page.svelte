@@ -35,8 +35,8 @@
     try {
       userStatsResponse = await getStats(code, state, onlyStats)
       userStatsResponseColne = userStatsResponse
-      userStatsResponseSchools = userStatsResponse.filter(obj => obj.navn.includes("skole"))
-      userStatsResponseAdmin = userStatsResponse.filter(obj => !obj.navn.includes("skole"))
+      userStatsResponseSchools = userStatsResponse.filter(obj => obj.navn.includes("skole") || obj.navn.includes("Kompetansebyggeren") || obj.navn.includes('Skolen'))
+      userStatsResponseAdmin = userStatsResponse.filter(obj => !obj.navn.includes("skole") && !obj.navn.includes("Kompetansebyggeren") && !obj.navn.includes('Skolen'))
     } catch (error) {
       const errorMsg =  error.response?.data?.message || error.stack || error.toString()
       userStatsResponse = { hasError: true, message: errorMsg }
@@ -215,37 +215,37 @@
             borderWidth: 1,
             stack: 'Stack 1', // groups
           },
-          {
-            //The label for the dataset which appears in the legend and tooltips.
-            label: 'Fullført Ansatte(skole)',
-            //data for the line
-            data: [],
-            //styling of the chart
-            backgroundColor: [
-              '#B2E1ED',
-            ],
-            borderColor: [
-              '#4CB9D4',
-            ],
-            borderWidth: 1,
-            stack: 'Stack 0', // groups
-          },
-          {
-            //The label for the dataset which appears in the legend and tooltips.
-            label: 'Ikke fullført Ansatte(skole)',
-            //data for the line
-            data: [],
-            //styling of the chart
-            backgroundColor: [
-              '#CD5D77',
-            ],
-            borderColor: [
-              '#BE2E50',
-            ],
-            borderWidth: 1,
-            stack: 'Stack 0', // groups
-          }
-        ]
+          // {
+          //   //The label for the dataset which appears in the legend and tooltips.
+          //   label: 'Fullført Ansatte(skole)',
+          //   //data for the line
+          //   data: [],
+          //   //styling of the chart
+          //   backgroundColor: [
+          //     '#B2E1ED',
+          //   ],
+          //   borderColor: [
+          //     '#4CB9D4',
+          //   ],
+          //   borderWidth: 1,
+          //   stack: 'Stack 0', // groups
+          // },
+          // {
+          //   //The label for the dataset which appears in the legend and tooltips.
+          //   label: 'Ikke fullført Ansatte(skole)',
+          //   //data for the line
+          //   data: [],
+          //   //styling of the chart
+          //   backgroundColor: [
+          //     '#CD5D77',
+          //   ],
+          //   borderColor: [
+          //     '#BE2E50',
+          //   ],
+          //   borderWidth: 1,
+          //   stack: 'Stack 0', // groups
+          // }
+        ],
       },
       options: {
         scales: {
@@ -279,18 +279,15 @@
    });
     Chart.register(ChartDataLabels);
     // map data from data set to chart
+    // Labels 
     chart.data.labels = userStatsResponse.map(n => n.navn)
-    // Administrasjon dataset
-    if(userStatsResponse.elev === null) {
-      chart.data.datasets[0].data = userStatsResponse.map(n => n.ansatt?.antall)
-      chart.data.datasets[1].data = userStatsResponse.map(n => n.max - n.ansatt?.antall)
-    }
-    // Skoler, elever dataset
+    // Ansatte
+    chart.data.datasets[0].data = userStatsResponse.map(n => n.ansatt?.antall)
+    chart.data.datasets[1].data = userStatsResponse.map(n => n.ansatt?.max - n.ansatt?.antall)
+    // Elever
     chart.data.datasets[2].data = userStatsResponse.map(n => n.elev?.antall)
     chart.data.datasets[3].data = userStatsResponse.map(n => n.elev?.max - n.elev?.antall)
-    // Skoler, ansatte dataset
-    chart.data.datasets[4].data = userStatsResponse.map(n => n.ansatt?.antall)
-    chart.data.datasets[5].data = userStatsResponse.map(n => n.ansatt?.max - n.ansatt?.antall)
+    // Update the chart
     chart.update();
   })
 
@@ -399,7 +396,7 @@
     padding: 16px;
   }
   #chart {
-    height: 100% !important;
+    height: 2000px !important;
     width: 100% !important;
   }
   table, th, td {
