@@ -35,8 +35,8 @@
     try {
       userStatsResponse = await getStats(code, state, onlyStats)
       userStatsResponseColne = userStatsResponse
-      userStatsResponseSchools = userStatsResponse.filter(obj => obj.navn.includes("skole") || obj.navn.includes("Kompetansebyggeren") || obj.navn.includes('Skolen'))
-      userStatsResponseAdmin = userStatsResponse.filter(obj => !obj.navn.includes("skole") && !obj.navn.includes("Kompetansebyggeren") && !obj.navn.includes('Skolen'))
+      userStatsResponseSchools = userStatsResponse.filter(obj => !obj.navn.startsWith('Seksjon') && (obj.navn.includes("skole") || obj.navn.includes("Kompetansebyggeren") || obj.navn.includes('Skolen') || obj.navn.includes('skule')))
+      userStatsResponseAdmin = userStatsResponse.filter(obj => obj.navn.startsWith('Seksjon') || (!obj.navn.includes("skole") && !obj.navn.includes("Kompetansebyggeren") && !obj.navn.includes('Skolen') && !obj.navn.includes('skule')))
     } catch (error) {
       const errorMsg =  error.response?.data?.message || error.stack || error.toString()
       userStatsResponse = { hasError: true, message: errorMsg }
