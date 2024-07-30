@@ -24,6 +24,7 @@
 
   // State
   let userStatsResponse
+  let dataToDisplay
   let userStatsResponseFull
   let userStatsResponseColne
   let userStatsResponseSchools
@@ -31,24 +32,17 @@
   let showTableState = false
   let showChartState = true
 
-  const getUserStats = async (code, state, onlyStats) => {
+  const getUserStats = async (code, state) => {
     try {
-      userStatsResponse = await getStats(code, state, onlyStats)
-      userStatsResponseColne = userStatsResponse
-      userStatsResponseSchools = userStatsResponse.filter(obj => !obj.navn.startsWith('Seksjon') && (obj.navn.includes("skole") || obj.navn.includes("Kompetansebyggeren") || obj.navn.includes('Skolen') || obj.navn.includes('skule')))
-      userStatsResponseAdmin = userStatsResponse.filter(obj => obj.navn.startsWith('Seksjon') || (!obj.navn.includes("skole") && !obj.navn.includes("Kompetansebyggeren") && !obj.navn.includes('Skolen') && !obj.navn.includes('skule')))
+      userStatsResponse = await getStats(code, state)
+      dataToDisplay = userStatsResponse.fullStats
+      userStatsResponseColne = userStatsResponse.fullStats
+      userStatsResponseSchools = userStatsResponse.schoolStats
+      userStatsResponseAdmin = userStatsResponse.administrationStats
+      userStatsResponseFull = userStatsResponse.csvUsers
     } catch (error) {
       const errorMsg =  error.response?.data?.message || error.stack || error.toString()
       userStatsResponse = { hasError: true, message: errorMsg }
-    }
-  }
-
-  const getUserStatsFull = async (code, state, onlyStats) => {
-    try {
-      userStatsResponseFull = await getStats(code, state, onlyStats)
-    } catch (error) {
-      const errorMsg =  error.response?.data?.message || error.stack || error.toString()
-      userStatsResponseFull = { hasError: true, message: errorMsg }
     }
   }
 
@@ -58,21 +52,21 @@
   }
 
   const showTable = () => {
-    userStatsResponse = userStatsResponseColne
+    dataToDisplay = userStatsResponseColne
     showChartState = false
     showTableState = true
   }
 
   const showOnlySchools = () => {
-    userStatsResponse = userStatsResponseSchools
+    dataToDisplay = userStatsResponseSchools
   }
 
   const showOnlyAdmin = () => {
-    userStatsResponse = userStatsResponseAdmin
+    dataToDisplay = userStatsResponseAdmin
   }
 
   const showAll = () => {
-    userStatsResponse = userStatsResponseColne
+    dataToDisplay = userStatsResponseColne
   }
 
   const downloadCsv = () => {
@@ -113,8 +107,7 @@
       // Hvis de ikke er der, kan vi vel sende til forsiden egt
       goto('/admin', { replaceState: false })
     } else {
-      getUserStats(code, state, true)
-      getUserStatsFull(code, state, false)
+      getUserStats(code, state)
       fakeLoadingMessages()
     }
   })
@@ -135,7 +128,7 @@
     const footer = (tooltipItems) => {
       let percentage = 0;
       let total = 0
-      const data = userStatsResponse.find(s => s.navn === tooltipItems[0].label)
+      const data = dataToDisplay.find(s => s.navn === tooltipItems[0].label)
       if(tooltipItems[0].dataset.label.includes('Ansatt')) {
         percentage = data.ansatt?.fullføringsgrad || data.fullføringsgrad
         total = data.ansatt?.max || data.max
@@ -280,13 +273,13 @@
     Chart.register(ChartDataLabels);
     // map data from data set to chart
     // Labels 
-    chart.data.labels = userStatsResponse.map(n => n.navn)
+    chart.data.labels = dataToDisplay.map(n => n.navn)
     // Ansatte
-    chart.data.datasets[0].data = userStatsResponse.map(n => n.ansatt?.antall)
-    chart.data.datasets[1].data = userStatsResponse.map(n => n.ansatt?.max - n.ansatt?.antall)
+    chart.data.datasets[0].data = dataToDisplay.map(n => n.ansatt?.antall)
+    chart.data.datasets[1].data = dataToDisplay.map(n => n.ansatt?.max - n.ansatt?.antall)
     // Elever
-    chart.data.datasets[2].data = userStatsResponse.map(n => n.elev?.antall)
-    chart.data.datasets[3].data = userStatsResponse.map(n => n.elev?.max - n.elev?.antall)
+    chart.data.datasets[2].data = dataToDisplay.map(n => n.elev?.antall)
+    chart.data.datasets[3].data = dataToDisplay.map(n => n.elev?.max - n.elev?.antall)
     // Update the chart
     chart.update();
   })
@@ -321,14 +314,14 @@
       </div>
       {#if showChartState}
         <!-- Empty div around the canvas to stop it from growing -->
-        {#key userStatsResponse}
+        {#key dataToDisplay}
           <div> 
             <canvas id="chart"></canvas>
           </div>
         {/key}
       {/if}
       {#if showTableState}
-        {#key userStatsResponse}
+        {#key dataToDisplay}
           <div class="centerstuff">
             <table>
               <thead>
@@ -346,7 +339,7 @@
                 <tr/>
               </thead>
               <tbody>
-                {#each Object.values(userStatsResponse) as row}
+                {#each Object.values(dataToDisplay) as row}
                   <tr>
                       <td>{row.navn}</td>
                       <td>{row.elev?.antall === undefined ? 0 : row.elev?.antall}</td>

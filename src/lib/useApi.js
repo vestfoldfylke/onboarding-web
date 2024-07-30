@@ -106,8 +106,8 @@ export const entraMfaAuth = async (code, state) => {
 export const getStats = async (code, state, onlyStats) => {
   if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
     await sleep(1000)
-    if(onlyStats === true) {
-      return [
+    return {
+      fullStats: [
         {
           "ansatt": {
             "antall": 149,
@@ -209,10 +209,113 @@ export const getStats = async (code, state, onlyStats) => {
           },
           "navn": "Horten videregående skole"
         }
-      ]
-    } else {
-      
-      return [
+      ],
+      schoolStats: [
+        {
+          "ansatt": {
+            "antall": 149,
+            "max": 162,
+            "fullføringsgrad": 92.01
+          },
+          "elev": {
+            "antall": 700,
+            "max": 883,
+            "fullføringsgrad": 79.25
+          },
+          "navn": "Færder videregående skole"
+        },
+        {
+          "ansatt": {
+            "antall": 155,
+            "max": 167,
+            "fullføringsgrad": 92.81
+          },
+          "elev": {
+            "antall": 600,
+            "max": 775,
+            "fullføringsgrad": 77.42
+          },
+          "navn": "Re videregående skole"
+        },
+        {
+          "ansatt": {
+            "antall": 178,
+            "max": 330,
+            "fullføringsgrad": 53.94
+          },
+          "elev": {
+            "antall": 1000,
+            "max": 1528,
+            "fullføringsgrad": 65.49
+          },
+          "navn": "Thor Heyerdahl videregående skole"
+        },
+        {
+          "ansatt": {
+            "antall": 95,
+            "max": 95,
+            "fullføringsgrad": 100.00
+          },
+          "elev": {
+            "antall": 500,
+            "max": 580,
+            "fullføringsgrad": 86.20
+          },
+          "navn": "Nøtterøy videregående skole"
+        },
+        {
+          "ansatt": {
+            "antall": 130,
+            "max": 260,
+            "fullføringsgrad": 50.00
+          },
+          "elev": {
+            "antall": 600,
+            "max": 1238,
+            "fullføringsgrad": 48.46
+          },
+          "navn": "Horten videregående skole"
+        }
+      ],
+      administrationStats: [
+        {
+          "ansatt": {
+            "antall":50,
+            "max": 54,
+            "fullføringsgrad": 92.59
+          },
+          "elev": null,
+          "navn": "Seksjon mobilitet"
+        },
+        {
+          "ansatt": {
+            "antall": 234,
+            "max": 310,
+            "fullføringsgrad": 75.48
+          },
+          "elev": null,
+          "navn": "Seksjon tannhelse"
+        },
+        {
+          "ansatt": {
+            "antall": 700,
+            "max": 1312,
+            "fullføringsgrad": 53.35
+          },
+          "elev": null,
+          "navn": "Kompetansebyggeren"
+        },
+        {
+          "ansatt": {
+            "antall": 120,
+            "max": 128,
+            "fullføringsgrad": 93.75
+          },
+          "elev": null,
+          "navn": "Opplæring og tannhelse"
+        }
+      ],
+      csvUsers: [
         {
           "_id": "6656cb705220d6e8f20d71bb",
           "userType": "ansatt",
