@@ -15,7 +15,7 @@
       const { loginUrl } = await getEntraMfaLoginUrl(userPrincipalName, logEntryId)
       window.location.href = loginUrl
     } catch (error) {
-      const errorMsg = error.response?.data || error.stack || error.toString()
+      const errorMsg = error.response?.data?.message || error.stack || error.toString()
       entraPwdAuthResponse = { hasError: true, message: errorMsg }
     }
   }
