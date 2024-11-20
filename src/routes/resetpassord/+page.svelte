@@ -71,7 +71,7 @@
     if (!(code && state && iss)) {
       console.log('De er ikke der, slutt å kødde')
       // Hvis de ikke er der, kan vi vel sende til forsiden egt
-      goto('/', { replaceState: false })
+      goto('/')
     } else {
       resetPasswordForUser(code, iss, state)
       fakeLoadingMessages()
@@ -88,7 +88,10 @@
     </div>
   {:else if resetPasswordResponse.hasError}
     <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
-    <div class="error">{resetPasswordResponse.message}</div>
+    <div class="error">
+      <p>{resetPasswordResponse.message}</p>
+      <div style="display: flex; gap: 5px; align-items: center"><span class="material-symbols-outlined">arrow_back</span><a href="/">Til startsiden</a></div>
+    </div>
   {:else}
     <h3>Hei, {resetPasswordResponse.displayName}</h3>
     <div class="section">
@@ -134,6 +137,7 @@
         <div class="error">
           <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
           <p>{entraErrorMessage}</p>
+          <div style="display: flex; gap: 5px; align-items: center"><span class="material-symbols-outlined">arrow_back</span><a href="/">Til startsiden</a></div>
         </div>
       {/if}
     </div>

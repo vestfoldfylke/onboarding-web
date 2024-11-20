@@ -105,7 +105,7 @@
     if (!(code && state)) {
       console.log('De er ikke der, slutt å kødde')
       // Hvis de ikke er der, kan vi vel sende til forsiden egt
-      goto('/admin', { replaceState: false })
+      goto('/admin')
     } else {
       getUserStats(code, state)
       fakeLoadingMessages()
