@@ -46,7 +46,7 @@
     if (!(code && state)) {
       console.log('De er ikke der, slutt å kødde')
       // Hvis de ikke er der, kan vi vel sende til forsiden egt
-      goto('/', { replaceState: false })
+      goto('/')
     } else {
       entraAuthentication(code, state)
       fakeLoadingMessages()
@@ -63,7 +63,10 @@
     </div>
   {:else if entraResponse.hasError}
     <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
-    <div class="error">{entraResponse.message}</div>
+    <div class="error">
+      <p>{entraResponse.message}</p>
+      <div style="display: flex; gap: 5px; align-items: center"><span class="material-symbols-outlined">arrow_back</span><a href="/">Til startsiden</a></div>
+    </div>
   {:else}
     <h3>Hei, {entraResponse.displayName}</h3>
     <div class="section">

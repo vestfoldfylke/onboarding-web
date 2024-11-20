@@ -10,16 +10,17 @@
 
     if (!(code && state && iss)) {
       console.log('De er ikke der, slutt å kødde')
-      throw new Error('SLUTT med det')
-    }
-    // check state and goto corresponding site
-    const actionString = state.substring(0,30)
-    if (actionString.includes('resetpassword')) {
-      goto('/resetpassord', { state: { code, state, iss }, replaceState: true, invalidateAll: true })
-    } else if (actionString.includes('verifyuser')) {
-      goto('/verifyuser', { state: { code, state, iss } })
+      goto('/')
     } else {
-      throw new Error('Her vart det itj no gyldig action... prøv igjen')
+      // check state and goto corresponding site
+      const actionString = state.substring(0,30)
+      if (actionString.includes('resetpassword')) {
+        goto('/resetpassord', { state: { code, state, iss }, replaceState: true })
+      } else if (actionString.includes('verifyuser')) {
+        goto('/verifyuser', { state: { code, state, iss }, replaceState: true })
+      } else {
+        throw new Error('Her vart det itj no gyldig action... prøv igjen')
+      }
     }
   })
 

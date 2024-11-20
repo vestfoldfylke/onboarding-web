@@ -10,13 +10,13 @@
 
     if (!(code && state)) {
       console.log('De er ikke der, slutt å kødde')
-      throw new Error('SLUTT med det')
+      goto('/')
     }
     // check state and goto corresponding site
     if (state.startsWith('stats')) {
-      goto('/stats', { state: { code, state } })
+      goto('/stats', { state: { code, state }, replaceState: true })
     } else {
-      goto('/success', { state: { code, state } })
+      goto('/success', { state: { code, state }, replaceState: true })
     }
   })
 

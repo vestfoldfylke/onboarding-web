@@ -43,7 +43,7 @@
     if (!(code && state && iss)) {
       console.log('De er ikke der, slutt å kødde')
       // Hvis de ikke er der, kan vi vel sende til forsiden egt
-      goto('/', { replaceState: false })
+      goto('/')
     } else {
       verifyEntraUser(code, iss, state)
       fakeLoadingMessages()
@@ -60,7 +60,10 @@
     </div>
   {:else if verifyUserResponse.hasError}
     <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
-    <div class="error">{verifyUserResponse.message}</div>
+    <div class="error">
+      <p>{verifyUserResponse.message}</p>
+      <div style="display: flex; gap: 5px; align-items: center"><span class="material-symbols-outlined">arrow_back</span><a href="/">Til startsiden</a></div>
+    </div>
     <br />
     <InfoBox title="Trenger du hjelp?">
       <p>Telefon: <a href="tel:{import.meta.env.VITE_SERVICEDESK_TLF.replaceAll(' ', '')}">{import.meta.env.VITE_SERVICEDESK_TLF}</a></p>
