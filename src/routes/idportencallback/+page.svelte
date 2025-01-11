@@ -26,8 +26,8 @@
 
 </script>
 
-<div>
-  redirecting...
+<div class="center-container">
+  Omdirigerer...
 </div>
 
 

@@ -1,11 +1,17 @@
 <script>
   import { onMount } from 'svelte'
   import { resetPassword, getEntraPwdLoginUrl } from '../../lib/useApi'
+  import { getThemeAsset } from '$lib/themes/theme.config'
   import { page } from '$app/stores'
   import IconSpinner from '../../lib/components/Icons/IconSpinner.svelte'
   import { goto } from '$app/navigation'
   import InfoBox from '../../lib/components/InfoBox.svelte';
 
+  const loadingIcon = getThemeAsset('images/loading.svg')
+  const errorIcon = getThemeAsset('images/error.svg')
+  const successIcon = getThemeAsset('images/success.svg')
+  const resetIcon = getThemeAsset('images/reset.svg')
+  
   const sleep = (ms) => {
     return new Promise((resolve) => {
       setTimeout(resolve, ms)
@@ -154,37 +160,3 @@
     <p><i><strong>**</strong> Tofaktorautentisering betyr at du bruker to faktorer (bevis) for å bekrefte identiteten din når du logger deg på.</i></p>
   </div>
 </div>
-
-
-<style>
-  .loading {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    width: 100%;
-    justify-content: center;
-  }
-  .loadingMessage {
-    font-style: italic;
-    width: 200px;
-  }
-  .section {
-    margin: 12px 0px;
-  }
-  .error {
-    background-color: var(--nype-10);
-    padding: 16px;
-  }
-  .modalContent {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .modalTitle {
-    margin-bottom: 8px;
-  }
-  form {
-    height: 100%;
-  }
-</style>

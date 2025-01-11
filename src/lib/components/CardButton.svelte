@@ -1,19 +1,26 @@
 <script>
-    import { goto } from '$app/navigation';
-    import IconSpinner from './Icons/IconSpinner.svelte';
-
-    // Props
-    export let header = 'header'
-    export let imgPath = 'path'
+    import { goto } from '$app/navigation'
+    import IconSpinner from './Icons/IconSpinner.svelte'
+    
+    export let header = ''
+    export let imgPath = ''
     export let imgAlt = 'alt'
     export let gotoPath = 'urlPath'
     export let paragraph = 'some text'
     export let boolValue = false
     export let loading = false
-    export let func
+    export let func = () => {} // Default empty function
+
+    const handleClick = () => {
+        if (boolValue) {
+            goto(gotoPath)
+        } else {
+            func()
+        }
+    }
 </script>
 
-<button on:click={boolValue ? () => goto(gotoPath) : func} class="card">
+<button on:click={handleClick} class="card">
     {#if loading}
         <div class="loadingSpinner">
             <IconSpinner width="80px"/>

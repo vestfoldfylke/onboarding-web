@@ -2,7 +2,11 @@
   import { onMount } from 'svelte'
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
+  import { getThemeAsset } from '$lib/themes/theme.config'
+  import IconSpinner from '$lib/components/Icons/IconSpinner.svelte'
 
+  const loadingIcon = getThemeAsset('images/loading.svg')
+  let loadingMessage = "Omdirigerer..."
 
   onMount(() => {
     const code = $page.url.searchParams.get('code')
@@ -19,13 +23,11 @@
       goto('/success', { state: { code, state }, replaceState: true })
     }
   })
-
 </script>
 
-<div>
-  redirecting...
+<div class="centerstuff">
+  <div class="loading">
+    <IconSpinner />
+    <p class="loadingMessage">{loadingMessage}</p>
+  </div>
 </div>
-
-
-<style>
-</style>
