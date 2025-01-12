@@ -65,8 +65,12 @@ Litt småskjult - gir deg valg om å logge på for å se statistikk
 ### /stats
 Får state og code fra page-state. Sender over til api, og venter på respons. Om 200 respons følger det med statistikk, og UX-designer har laget masse fine grafer.
 
+## Theme
+/static/theme kan ha forskjellige temaer. Lag ditt eget og benytt VITE_THEME_NAME-variabelen
+
 ## Env variables
 ```bash
+VITE_THEME_NAME="" # Eksempel "vestfold" for vestfold-theme (mappe)
 VITE_ONBOARDING_API_URI="http://localhost:7071/api" # Trengs ikke om mock-api er true
 VITE_ONBOARDING_API_PUBLIC_KEY="skikkeligbrakeysomerpublicallikevelsåikkesåfarlig" # Trengs ikke om mock-api er true
 VITE_MOCK_API="true/false" # Om "true", så mockes alle api-kall 
