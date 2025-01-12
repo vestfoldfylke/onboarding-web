@@ -71,7 +71,7 @@ VITE_ONBOARDING_API_URI="http://localhost:7071/api" # Trengs ikke om mock-api er
 VITE_ONBOARDING_API_PUBLIC_KEY="skikkeligbrakeysomerpublicallikevelsåikkesåfarlig" # Trengs ikke om mock-api er true
 VITE_MOCK_API="true/false" # Om "true", så mockes alle api-kall 
 VITE_SERVICEDESK_TLF="33 44 55 66"
-VITE_SERVICEDESK_EPOST="servicedesk@fisfylke.no"
+VITE_SERVICEDESK_EPOST="servicedesk@fylke.no"
 ```
 
 ## Mock-api

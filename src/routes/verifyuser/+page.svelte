@@ -73,25 +73,3 @@
     redirecting...
   {/if}
 </div>
-
-
-<style>
-  .loading {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    width: 100%;
-    justify-content: center;
-  }
-  .loadingMessage {
-    font-style: italic;
-    width: 200px;
-  }
-  .section {
-    margin: 12px 0px;
-  }
-  .error {
-    background-color: var(--nype-10);
-    padding: 16px;
-  } 
-</style>
