@@ -1,418 +1,437 @@
-/* =========================================
-   IMPORTS
-   ========================================= */
-   @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&display=swap');
-   @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&display=swap');
-   @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-   
-   /* =========================================
-      VARIABLES
-      ========================================= */
-   :root {
-     /* Vann Colors */
-     --vann-10: #E5EEEF;
-     --vann-20: #CCDCDF;
-     --vann-30: #B2CBCF;
-     --vann-40: #99BABF;
-     --vann-50: #80A8AF;
-     --vann-60: #6697A0;
-     --vann-70: #4C8690;
-     --vann-80: #337580;
-     --vann-90: #196370;
-     --vann: #005260;
-   
-     /* Himmel Colors */
-     --himmel-10: #E5F5F9;
-     --himmel-20: #CCEBF3;
-     --himmel-30: #B2E1ED;
-     --himmel-40: #99D7E7;
-     --himmel-50: #80CDE0;
-     --himmel-60: #66C3DA;
-     --himmel-70: #4CB9D4;
-     --himmel-80: #33AFCE;
-     --himmel-90: #19A5C8;
-     --himmel: #005260;
-   
-     /* Nype Colors */
-     --nype-10: #F8E8EC;
-     --nype-20: #F1D1D8;
-     --nype-30: #E9B9C5;
-     --nype-40: #E2A2B1;
-     --nype-50: #DB8B9E;
-     --nype-60: #D4748B;
-     --nype-70: #CD5D77;
-     --nype-80: #C54564;
-     --nype-90: #BE2E50;
-     --nype: #B7173D;
-   
-     /* Plomme Colors */
-     --plomme-10: #EEEAEF;
-     --plomme-20: #DED5DF;
-     --plomme-30: #CDC0D0;
-     --plomme-40: #BDABC0;
-     --plomme-50: #AC96B0;
-     --plomme-60: #9C82A0;
-     --plomme-70: #8B6D90;
-     --plomme-80: #7B5881;
-     --plomme-90: #19A5C8;
-     --plomme: #6A4371;
-   
-     /* Gress Colors */
-     --gress-10: #E9F4EF;
-     --gress-20: #D2EAE0;
-     --gress-30: #BCDFD0;
-     --gress-40: #A5D5C0;
-     --gress-50: #8FCAB0;
-     --gress-60: #79BFA1;
-     --gress-70: #62B591;
-     --gress-80: #4CAA81;
-     --gress-90: #35A072;
-     --gress: #1F9562;
-   
-     /* Korn Colors */
-     --korn-10: #F6F5EB;
-     --korn-20: #EDEAD8;
-     --korn-30: #E4E0C4;
-     --korn-40: #DBD6B0;
-     --korn-50: #D2CB9C;
-     --korn-60: #C9C189;
-     --korn-70: #C0B775;
-     --korn-80: #B7AD61;
-     --korn-90: #AEA24E;
-     --korn: #A5983A;
-   
-     /* Text Colors */
-     --text-primary: #000000;
-     --text-secondary: #555555;
-   
-     /* Primary Colors for Mock Buttons */
-     --primary-color: var(--himmel-20);
-     --primary-color-dark: var(--himmel-40);
-   }
-   
-   /* =========================================
-      BASE STYLES
-      ========================================= */
-   body {
-     margin: 0;
-     padding: 0;
-     font-family: 'Nunito Sans', Lato, 'Trebuchet MS', sans-serif;
-     height: 100%;
-     line-height: 1.4;
-   }
-   
-   * {
-     box-sizing: border-box;
-     -webkit-font-smoothing: antialiased;
-     -moz-osx-font-smoothing: grayscale;
-     image-rendering: -webkit-optimize-contrast;
-     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-     padding: 0;
-     margin: 0;
-   }
-   
-   input,
-   select,
-   textarea,
-   button {
-     font-family: inherit;
-     font-size: inherit;
-   }
-   
-   a {
-     color: var(--vann);
-     text-decoration: none;
-   }
-   
-   a:hover {
-     color: #000;
-   }
-   
-   /* =========================================
-      LAYOUT
-      ========================================= */
-   .topbar {
-     width: 100%;
-     background-color: var(--himmel-10);
-     padding: 20px 0;
-   }
-   
-   .toptop {
-     width: 100%;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     padding: 20px 40px 40px 40px;
-   }
-   
-   .topbarOptions {
-     display: flex;
-     flex-direction: column;
-     align-items: flex-end;
-   }
-   
-   .logo {
-     width: 180px;
-   }
-   
-   .appTitle {
-     color: black;
-     text-decoration: none;
-   }
-   
-   .content {
-     padding: 20px 20px 10px 20px;
-     margin: auto;
-     max-width: 1440px;
-   }
-   
-   .centerstuff {
-     display: flex;
-     flex-direction: row;
-     flex-wrap: wrap;
-     justify-content: center;
-   }
-   
-   .section {
-     margin: 12px 0;
-   }
-   
-   /* =========================================
-      COMPONENTS
-      ========================================= */
-   
-   /* Buttons */
-   button {
-     padding: 8px;
-     cursor: pointer;
-     background-color: var(--himmel-20);
-     border: 2px solid var(--himmel-30);
-     border-radius: 12px;
-     align-items: center;
-     justify-content: center;
-   }
-   
-   button:hover {
-     background-color: var(--himmel-30);
-   }
-   
-   button.big {
-     padding: 16px;
-     font-size: 1.1em;
-     background-color: var(--himmel-20);
-     border: 2px solid var(--himmel-30);
-     border-radius: 12px;
-     transition: background-color 0.3s;
-     color: black;
-     cursor: pointer;
-     align-items: center;
-     justify-content: center;
-   }
-   
-   button.big:hover {
-     background-color: var(--himmel-40);
-   }
-   
-   button.link {
-     padding: 0;
-     background-color: inherit;
-     border: none;
-     text-decoration: underline;
-     color: var(--vann);
-   }
-   
-   button.link:hover {
-     color: #000;
-   }
-   
-   button.link span,
-   button span {
-     font-size: 18px;
-     padding: 0 5px;
-     vertical-align: middle !important;
-   }
-   
-   /* Mock Buttons */
-   .mock-button {
-     background: var(--primary-color);
-     color: var(--text-primary);
-     border: none;
-     padding: 1rem 2rem;
-     border-radius: 4px;
-     cursor: pointer;
-     font-size: 1rem;
-     margin: 1rem 0;
-     transition: background-color 0.3s;
-   }
-   
-   .mock-button:hover {
-     background: var(--primary-color-dark);
-   }
-   
-   /* Cards */
-   .card {
-     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-     transition: 0.3s;
-     border-radius: 1rem;
-     margin: 1rem;
-     width: 310px;
-     height: 310px;
-     padding: 16px;
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     align-items: center;
-   }
-   
-   .card:hover {
-     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-     background: linear-gradient(rgb(255, 255, 255), rgb(178, 203, 207));
-     cursor: pointer;
-   }
-   
-   /* Mock Containers */
-   .mock-container {
-     text-align: center;
-     padding: 2rem;
-     max-width: 600px;
-     margin: 0 auto;
-   }
-   
-   .mock-icon {
-     width: 64px;
-     height: 64px;
-     margin-bottom: 1rem;
-   }
-   
-   .mock-info {
-     color: var(--text-secondary);
-     font-size: 0.9rem;
-     margin-top: 1rem;
-   }
-   
-   /* Loading States */
-   .loading {
-     display: flex;
-     align-items: center;
-     gap: 16px;
-     width: 100%;
-     justify-content: center;
-     text-align: center;
-     margin-top: 2rem;
-   }
-   
-   .loadingMessage {
-     margin-top: 1rem;
-     color: var(--text-primary);
-     font-style: italic;
-   }
-   
-   .loadingSpinner {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-   }
-   
-   /* Error States */
-   .error {
-     text-align: center;
-     background-color: var(--nype-10);
-     padding: 16px;
-     border-radius: 8px;
-   }
-   
-   /* =========================================
-      DIALOGS
-      ========================================= */
-   dialog {
-     min-height: 230px;
-     margin: auto;
-     border: none;
-     padding: 32px;
-   }
-   
-   dialog::backdrop {
-     background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7));
-     animation: fade-in 1s;
-   }
-   
-   .modalContent {
-     padding: 2rem;
-     background-color: white;
-     border-radius: 12px;
-   }
-   
-   .modalTitle {
-     color: var(--text-primary);
-     margin-bottom: 1rem;
-   }
-   
-   .back-link {
-     display: flex;
-     gap: 5px;
-     align-items: center;
-     margin-top: 1rem;
-   }
-   
-   /* =========================================
-      ANIMATIONS
-      ========================================= */
-   @keyframes fade-in {
-     from {
-       opacity: 0;
-     }
-     to {
-       opacity: 1;
-     }
-   }
-   
-   /* =========================================
-      MEDIA QUERIES
-      ========================================= */
-   @media only screen and (max-width: 768px) {
-     /* Layout Adjustments */
-     .topbar {
-       padding: 5px 0;
-     }
-   
-     .toptop {
-       padding: 5px;
-     }
-   
-     .appTitle {
-       display: none;
-       font-size: 10px;
-     }
-   
-     .logo {
-       width: 92px;
-     }
-   
-     .content {
-       padding: 12px;
-     }
-   
-     /* Card Adjustments */
-     .card {
-       width: 100%;
-       height: unset;
-       margin: 0.5rem;
-     }
-   
-     .card img,
-     .loadingSpinner {
-       height: 100px;
-       width: 100px;
-       padding: 16px;
-     }
-   
-     /* Dialog Adjustments */
-     dialog {
-       padding: 16px;
-     }
-   
-     /* Additional Mobile Styles */
-     .section {
-       margin: 12px 0;
-     }
-   }
+/* ===================
+   1. IMPORTS
+   =================== */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+/* ===================
+   2. VARIABLES
+   =================== */
+:root {
+    /* Brand Colors */
+    --vann: #005260;
+    --himmel: #005260;
+    --nype: #B7173D;
+    --plomme: #6A4371;
+    --gress: #1F9562;
+    --korn: #A5983A;
+
+    /* Color Variations - Using CSS custom properties pattern */
+    --vann-10: #E5EEEF;
+    --vann-20: #CCDCDF;
+    --vann-30: #B2CBCF;
+    --vann-40: #99BABF;
+    --vann-50: #80A8AF;
+    --vann-60: #6697A0;
+    --vann-70: #4C8690;
+    --vann-80: #337580;
+    --vann-90: #196370;
+    --himmel-10: #E5F5F9;
+    --himmel-20: #CCEBF3;
+    --himmel-30: #B2E1ED;
+    --himmel-40: #99D7E7;
+    --himmel-50: #80CDE0;
+    --himmel-60: #66C3DA;
+    --himmel-70: #4CB9D4;
+    --himmel-80: #33AFCE;
+    --himmel-90: #19A5C8;
+    --nype-10: #F8E8EC;
+    --nype-20: #F1D1D8;
+    --nype-30: #E9B9C5;
+    --nype-40: #E2A2B1;
+    --nype-50: #DB8B9E;
+    --nype-60: #D4748B;
+    --nype-70: #CD5D77;
+    --nype-80: #C54564;
+    --nype-90: #BE2E50;
+    --plomme-10: #EEEAEF;
+    --plomme-20: #DED5DF;
+    --plomme-30: #CDC0D0;
+    --plomme-40: #BDABC0;
+    --plomme-50: #AC96B0;
+    --plomme-60: #9C82A0;
+    --plomme-70: #8B6D90;
+    --plomme-80: #7B5881;
+    --plomme-90: #19A5C8;
+    --gress-10: #E9F4EF;
+    --gress-20: #D2EAE0;
+    --gress-30: #BCDFD0;
+    --gress-40: #A5D5C0;
+    --gress-50: #8FCAB0;
+    --gress-60: #79BFA1;
+    --gress-70: #62B591;
+    --gress-80: #4CAA81;
+    --gress-90: #35A072;
+    --korn-10: #F6F5EB;
+    --korn-20: #EDEAD8;
+    --korn-30: #E4E0C4;
+    --korn-40: #DBD6B0;
+    --korn-50: #D2CB9C;
+    --korn-60: #C9C189;
+    --korn-70: #C0B775;
+    --korn-80: #B7AD61;
+    --korn-90: #AEA24E;
+
+    /* Text Colors */
+    --text-primary: #000000;
+    --text-secondary: #555555;
+
+    /* Component Colors */
+    --primary-color: var(--himmel-20);
+    --primary-color-dark: var(--himmel-40);
+}
+
+/* ===================
+   3. BASE STYLES
+   =================== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito Sans', Lato, 'Trebuchet MS', sans-serif;
+    height: 100%;
+    line-height: 1.4;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    image-rendering: -webkit-optimize-contrast;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    padding: 0;
+    margin: 0;
+}
+
+/* Form Elements */
+input,
+select,
+textarea,
+button {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Links */
+a {
+    color: var(--vann);
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+/* ===================
+   4. LAYOUT
+   =================== */
+.topbar {
+    width: 100%;
+    background-color: var(--himmel-10);
+    padding: 20px 0;
+}
+
+.toptop {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px 40px 40px;
+}
+
+.topbarOptions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.logo {
+    width: 180px;
+}
+
+.appTitle {
+    color: black;
+    text-decoration: none;
+}
+
+.content {
+    padding: 20px 20px 10px 20px;
+    margin: auto;
+    max-width: 1440px;
+}
+
+.centerstuff {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.section {
+    margin: 12px 0;
+}
+
+/* ===================
+   5. COMPONENTS
+   =================== */
+/* Buttons */
+button {
+    all: unset;
+    padding: 8px;
+    cursor: pointer;
+    background-color: var(--vann-10);
+    border: 2px solid var(--dark-grey-color-2);
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover {
+    background-color: var(--himmel-30);
+}
+
+button.big {
+    padding: 16px;
+    font-size: 1.1em;
+    background-color: var(--himmel-20);
+    border: 2px solid var(--himmel-30);
+    border-radius: 12px;
+    transition: background-color 0.3s;
+    color: black;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.big:hover {
+    background-color: var(--himmel-40);
+}
+
+button.link {
+    padding: 0;
+    background-color: inherit;
+    border: none;
+    color: var(--vann);
+}
+
+button.link span {
+    text-decoration: none;
+    font-size: 24px;
+    padding: 0 5px;
+    vertical-align: middle;
+}
+
+button.link:hover {
+    text-decoration: underline;
+    color: #000;
+}
+
+button.link:hover span {
+    text-decoration: none;
+}
+
+button span {
+    font-size: 24px;
+    padding: 0 5px;
+    vertical-align: middle !important;
+}
+
+/* Material icons specific size */
+.material-symbols-outlined {
+    font-size: 24px !important;
+}
+
+/* Mock Buttons */
+.mock-button {
+    background: var(--primary-color);
+    color: var(--text-primary);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 1rem 0;
+    transition: background-color 0.3s;
+}
+
+.mock-button:hover {
+    background: var(--primary-color-dark);
+}
+
+/* Cards */
+.card {
+    all: unset;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border-radius: 1rem;
+    margin: 1rem;
+    width: 310px;
+    height: 310px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    background: linear-gradient(rgb(255, 255, 255), rgb(178, 203, 207));
+    transform: translateY(-4px);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+    text-align: center;
+}
+
+.card img, 
+.loadingSpinner {
+    height: 170px;
+    width: 170px;
+    padding: 16px;
+    object-fit: contain;
+}
+
+/* Text Styles */
+.card h3 {
+    font-size: 1.2em;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.card p {
+    font-size: 1em;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+/* Mock Containers */
+.mock-container {
+    text-align: center;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.mock-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+}
+
+.mock-info {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+/* ===================
+   6. STATES
+   =================== */
+/* Loading States */
+.loading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.loadingMessage {
+    margin-top: 1rem;
+    color: var(--text-primary);
+    font-style: italic;
+}
+
+.loadingSpinner {
+    height: 170px;
+    width: 170px;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Error States */
+.error {
+    text-align: center;
+    background-color: var(--nype-10);
+    padding: 16px;
+    border-radius: 8px;
+}
+
+/* ===================
+   7. ANIMATIONS
+   =================== */
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ===================
+   8. MEDIA QUERIES
+   =================== */
+@media only screen and (max-width: 768px) {
+    /* Layout Adjustments */
+    .topbar {
+        padding: 5px 0;
+    }
+
+    .toptop {
+        padding: 5px;
+    }
+
+    .appTitle {
+        display: none;
+        font-size: 10px;
+    }
+
+    .logo {
+        width: 92px;
+    }
+
+    .content {
+        padding: 12px;
+    }
+
+    /* Card Adjustments */
+    .card {
+        border-radius: 1rem;
+        margin: 0.5rem;
+        padding: 16px;
+        width: 100%;
+        height: unset;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card img, 
+    .loadingSpinner {
+        height: 100px;
+        width: 100px;
+        padding: 16px;
+    }
+
+    /* Dialog Adjustments */
+    dialog {
+        padding: 16px;
+    }
+
+    /* Additional Mobile Styles */
+    .section {
+        margin: 12px 0;
+    }
+}

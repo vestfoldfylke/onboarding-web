@@ -3,6 +3,8 @@ SPA for onboarding peoples
 
 Onboarding, tilbakestilling av passord, og verifisering av brukere ved bruk av ID-porten. Dette er frontend, bruker BFF for autentisering / autorisering. [Se BFF / onboarding-api her](https://github.com/vestfoldfylke/onboarding-api)
 
+![Alt text](frontend-default.png)
+
 ## Flyter
 ### Tilbakestill passord
 - Velger aktiver bruker/tilbakestill passord
@@ -86,3 +88,11 @@ Sett VITE_MOCK_API til "true", da mockes alle api-kall lokalt i browser. Sjekk .
 - `npm i`
 - `npm run dev`
 - Herje i vei
+
+### Publiser til Azure Web App - Nodejs
+
+- Det du trenger av konfigurasjon i .env
+- Benytt adapter-node i svelte.config.js:1 ` import adapter from '@sveltejs/adapter-node' `
+- `npm run build`
+- Legg til 'package.json'-fil i 'build'-mappen med dette innholdet: `{ "type": "module" }`
+- Publiser 'build'-mappen til Azure WebApp. 
