@@ -3,6 +3,8 @@ SPA for onboarding peoples
 
 Onboarding, tilbakestilling av passord, og verifisering av brukere ved bruk av ID-porten. Dette er frontend, bruker BFF for autentisering / autorisering. [Se BFF / onboarding-api her](https://github.com/vestfoldfylke/onboarding-api)
 
+![Alt text](frontend-default.png)
+
 ## Flyter
 ### Tilbakestill passord
 - Velger aktiver bruker/tilbakestill passord
@@ -65,13 +67,17 @@ Litt småskjult - gir deg valg om å logge på for å se statistikk
 ### /stats
 Får state og code fra page-state. Sender over til api, og venter på respons. Om 200 respons følger det med statistikk, og UX-designer har laget masse fine grafer.
 
+## Theme
+/static/theme kan ha forskjellige temaer. Lag ditt eget og benytt VITE_THEME_NAME-variabelen
+
 ## Env variables
 ```bash
+VITE_THEME_NAME="" # Eksempel "vestfold" for vestfold-theme (mappe)
 VITE_ONBOARDING_API_URI="http://localhost:7071/api" # Trengs ikke om mock-api er true
 VITE_ONBOARDING_API_PUBLIC_KEY="skikkeligbrakeysomerpublicallikevelsåikkesåfarlig" # Trengs ikke om mock-api er true
 VITE_MOCK_API="true/false" # Om "true", så mockes alle api-kall 
 VITE_SERVICEDESK_TLF="33 44 55 66"
-VITE_SERVICEDESK_EPOST="servicedesk@fisfylke.no"
+VITE_SERVICEDESK_EPOST="servicedesk@fylke.no"
 ```
 
 ## Mock-api
@@ -82,3 +88,11 @@ Sett VITE_MOCK_API til "true", da mockes alle api-kall lokalt i browser. Sjekk .
 - `npm i`
 - `npm run dev`
 - Herje i vei
+
+### Publiser til Azure Web App - Nodejs
+
+- Det du trenger av konfigurasjon i .env
+- Benytt adapter-node i svelte.config.js:1 ` import adapter from '@sveltejs/adapter-node' `
+- `npm run build`
+- Legg til 'package.json'-fil i 'build'-mappen med dette innholdet: `{ "type": "module" }`
+- Publiser 'build'-mappen til Azure WebApp. 

@@ -1,8 +1,9 @@
 <script>
-  import '../app.css' // Add global css (and make it hot reload)
-  import logo from '$lib/assets/logo.png'
-  import { getIdportenLogoutUrl } from '../lib/useApi'
+  import { getIdportenLogoutUrl } from '$lib/useApi'
   import { goto } from '$app/navigation'
+  
+  export let data
+  const { theme } = data
 
   const logout = async () => {
     const { logoutUrl } = await getIdportenLogoutUrl()
@@ -10,13 +11,17 @@
   }
 
   const appTitle = ""
-
 </script>
+
+<svelte:head>
+  <link rel="icon" href={theme.assets.favicon} />
+  <link rel="stylesheet" href={theme.assets.css}>
+</svelte:head>
 
 <div class="topbar">
   <div class="toptop">
     <div>
-      <a href="/"><img class="logo" src={logo} alt="Fylkekommunens logo" /></a>
+      <a href="/"><img class="logo" src={theme.assets.logo} alt="Fylkekommunens logo" /></a>
     </div>
     <a href="/" title="Gå til forsiden" class="appTitle"><h1>{appTitle}</h1></a>
     <div class="topbarOptions">
@@ -30,56 +35,3 @@
 </div>
 <div class="footer">
 </div>
-
-<style>
-  .appTitle {
-    color: black;
-    text-decoration: none;
-  }
-  .topbar {
-    width: 100%;
-    background-color: var(--gress-10);
-    padding: 20px 0px;
-  }
-  .toptop {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px 40px 40px;
-  }
-  .topbarOptions {
-    float: right;
-    display: flex;
-    flex-direction: column;
-    align-items: self-end;
-  }
-  .logo {
-    width: 180px;
-  }
-  .content {
-    padding: 20px 20px 10px 20px;
-    margin: auto;
-    max-width: 1440px;
-  }
-
-  @media only screen and (max-width: 768px) {
-    /* For mobile phones: */
-    .topbar {
-      padding: 5px 0px;
-    }
-    .toptop {
-      padding: 5px;
-    }
-    .appTitle {
-      display: none;
-      font-size: 10px;
-    }
-    .logo {
-      width: 92px;
-    }
-    .content {
-      padding: 12px;
-    }
-  }
-</style>

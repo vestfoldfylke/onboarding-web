@@ -5,7 +5,6 @@
   import IconSpinner from '../../lib/components/Icons/IconSpinner.svelte'
   import { goto } from '$app/navigation'
   import InfoBox from '../../lib/components/InfoBox.svelte'
-  import computerKid from '$lib/assets/thumbs.gif'
 
   const sleep = (ms) => {
     return new Promise((resolve) => {
@@ -73,10 +72,7 @@
       <p><strong>Brukernavn:</strong> {entraResponse.userPrincipalName}</p>
     </div>
     <div class="section">
-      <p>✅ Kontoen din er nå klar til bruk</p>
-    </div>
-    <div class="section">
-      <img alt="Thumbs up kid" src={computerKid} />
+      <p> ✅ Kontoen din er nå klar til bruk</p>
     </div>
   {/if}
   <br />

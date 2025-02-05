@@ -55,8 +55,8 @@ export const resetPassword = async (code, iss, state) => {
     await sleep(1000)
     return {
       logEntryId: 'ijijiji',
-      displayName: 'Mock Trynefjert',
-      userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no',
+      displayName: 'Kari Nordmann',
+      userPrincipalName: 'mock.kari.nordmann@fylke.no',
       maskedPhoneNumber: '+47 *****123'
     }
   }
@@ -69,8 +69,8 @@ export const verifyUser = async (code, iss, state) => {
     await sleep(1000)
     return {
       logEntryId: 'jijijijiji',
-      displayName: 'Mock Trynefjert',
-      userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no'
+      displayName: 'Kari Nordmann',
+      userPrincipalName: 'mock.kari.nordmann@fylke.no'
     }
   }
   const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/VerifyUser`, { code, iss, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
@@ -82,8 +82,8 @@ export const entraPwdAuth = async (code, state) => {
     await sleep(1000)
     return {
       logEntryId: 'jfiji',
-      displayName: 'Mock Trynefjert',
-      userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no',
+      displayName: 'Kari Nordmann',
+      userPrincipalName: 'mock.kari.nordmann@fylke.no',
     }
   }
   const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraPwdAuth`, { code, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
@@ -95,8 +95,8 @@ export const entraMfaAuth = async (code, state) => {
     await sleep(1000)
     return {
       logEntryId: 'jfiji',
-      displayName: 'Mock Trynefjert',
-      userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no',
+      displayName: 'Kari Nordmann',
+      userPrincipalName: 'mock.kari.nordmann@fylke.no',
     }
   }
   const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/EntraMfaAuth`, { code, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
