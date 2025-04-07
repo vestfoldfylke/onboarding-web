@@ -13,7 +13,7 @@
     export let func
 </script>
 
-<button on:click={boolValue ? () => goto(gotoPath) : func} class="card">
+<button on:click={boolValue ? () => goto(gotoPath) : func } class="card">
     {#if loading}
         <div class="loadingSpinner">
             <IconSpinner width="80px"/>
