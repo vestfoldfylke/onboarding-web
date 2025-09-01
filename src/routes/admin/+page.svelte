@@ -28,7 +28,8 @@
   <div class="centerstuff">
     <div>
       <h3>Admin-greier</h3>
-      <button class="link" on:click={() => redirect('stats') }><span class="material-symbols-outlined">analytics</span>Se statistikk</button>
+      <!--<button class="link" on:click={() => redirect('stats') }><span class="material-symbols-outlined">analytics</span>Se statistikk</button>-->
+      <p>Ingenting å se eller gjøre her</p>
       {#if loading}
         laster...
       {/if}
