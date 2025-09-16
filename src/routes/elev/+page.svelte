@@ -36,9 +36,9 @@
     </div>
   {/if}
   <div class="centerstuff">
-    <CardButton header={''} imgPath={key} imgAlt={'Ikon bilde av en nøkkel'} gotoPath={''} paragraph={'Trykk her hvis du skal aktivere din nye brukerkonto eller tilbakestille passordet ditt'} boolValue={false} {loading} func={() => redirect('resetpassword')}/>
+    <CardButton header={''} imgPath={key} imgAlt={'Ikon bilde av en nøkkel'} gotoPath={''} paragraph={'Trykk her for å aktivere din nye brukerkonto eller tilbakestille passordet ditt'} boolValue={false} {loading} func={() => redirect('resetpassword')}/>
     {#if utenlandsreiseUrl}
-      <CardButton header={''} imgPath={travel} imgAlt={'Ikon bilde av et fly'} paragraph={'Trykk her hvis du vil logge deg på fylkeskommunens systemer mens du er i utlandet'} boolValue={false} func={() => {window.open(utenlandsreiseUrl)}}/>
+      <CardButton header={''} imgPath={travel} imgAlt={'Ikon bilde av et fly'} paragraph={'Trykk her for å logge deg på fylkeskommunens systemer mens du er i utlandet'} boolValue={false} func={() => {window.open(utenlandsreiseUrl)}}/>
     {/if}
   </div>
 </main>
