@@ -72,6 +72,7 @@ VITE_ONBOARDING_API_PUBLIC_KEY="skikkeligbrakeysomerpublicallikevelsåikkesåfar
 VITE_MOCK_API="true/false" # Om "true", så mockes alle api-kall 
 VITE_SERVICEDESK_TLF="33 44 55 66"
 VITE_SERVICEDESK_EPOST="servicedesk@fisfylke.no"
+VITE_UTENLANDSREISE_SKJEMA_URL="https://<url-til-ureis-skjema>.no" # Hvis du vil få opp knapp med lenke til skjema for utenlandsreise
 ```
 
 ## Mock-api
