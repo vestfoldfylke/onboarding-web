@@ -190,6 +190,8 @@
         {/if}
       </div>
 
+      <br />
+
       <InfoBox title="Ikke mottatt SMS? Trykk her">
         <p><strong>Er ikke dette ditt mobilnummer?</strong></p>
         <a href="https://minprofil.kontaktregisteret.no" target="_blank">Trykk her for å sjekke hva du har registrert i Kontakt- og reservasjonsregisteret</a>
