@@ -125,6 +125,13 @@ button:hover {
 	background-color: var(--himmel-30);
 }
 
+button:disabled {
+	background-color: var(--himmel-10);
+	border-color: var(--himmel-10);
+	color: var(--himmel-30);
+	cursor: not-allowed;
+}
+
 button.big {
 	padding: 16px;
 	font-size: 1.1em;
