@@ -124,7 +124,6 @@
 
     <br />
     <br />
-    <br />
 
     <label class="agreement-checkbox">
       <input type="checkbox" bind:checked={studentPcAgreementAcceptedCheckBoxValue} />
@@ -133,8 +132,6 @@
       </span>
     </label>
 
-    <br />
-    <br />
     <br />
 
     <div class="next-button-container">
