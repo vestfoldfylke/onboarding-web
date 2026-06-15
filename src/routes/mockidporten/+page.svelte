@@ -3,10 +3,18 @@
 
   const mockLogin = () => {
     const action = $page.url.searchParams.get('action')
+    
     if (!action) {
       throw new Error('Mangler query param ACTION!')
     }
-    window.location.href = `/idportencallback?code=mockcode&iss=mockiss&state=mock${action}`
+
+    const userType = $page.url.searchParams.get('user_type')
+
+    if (!userType || !['ansatt', 'elev'].includes(userType)) {
+      throw new Error('Mangler eller ugyldig query param! Må være "ansatt" eller "elev"')
+    }
+
+    window.location.href = `/idportencallback?code=mockcode&iss=mockiss&state=${userType}${action}mock`
     //goto('/idportencallback?code=mockcode&iss=mockiss&state=mockstate', { replaceState: false })
   }
 
