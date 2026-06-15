@@ -109,7 +109,7 @@
       <strong>Vi forventer at du blant annet:</strong>
     </p>
     <ul>
-      <li>tar godt var på PC-en din</li>
+      <li>tar godt vare på PC-en din</li>
       <li>melder fra til skolen hvis PC-en blir skadet, ikke fungerer eller om du mister den</li>
     </ul>
 
