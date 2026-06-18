@@ -74,10 +74,12 @@
     </div>
     <div class="section">
       <p>✅ Kontoen din er nå klar til bruk</p>
+      <br />
+      <p>
+        Du kan nå logge inn på fylkeskommunens systemer. Ta vare på brukernavn og passord.
+      </p>
     </div>
-    <div class="section">
-      <img alt="Thumbs up kid" src={computerKid} />
-    </div>
+
   {/if}
   <br />
   <InfoBox title="Trenger du hjelp?">
