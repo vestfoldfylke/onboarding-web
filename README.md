@@ -52,6 +52,17 @@ Får state, code, og iss fra page-state. Sender over til api, og venter på resp
 
 ### /entrapwdcallback
 Callbackside for entraPwd-enterprise-app redirects. Tar i mot state og code, og sender til api /EntraPwdAuth, om 200 respons, henter loginUrl for entraMfa-enterprise-app og redirecter til respons
+Om VITE_STUDENT_PC_AGREEMENT_REQUIRED=true og brukeren kommer seg hit, og er en elev, så har de også akseptert ELEV-PC vilkår. For å finne hvem som har gjort det, søk opp i database:
+
+Bytt ut `YYYY-MM-DD` med datoen du satte VITE_STUDENT_PC_AGREEMENT_REQUIRED=true, eller fra tidspunktet du vil sjekke at det er gjort
+
+```js
+{
+  userType: "elev",
+  "passwordChanged.successful": true,
+  "startedTimestamp": { $gt: "YYYY-MM-DD" }
+}
+```
 
 ### /entramfacallback
 Callbackside for entraMfa-enterprise-app redirects. Tar i mot state og code, sjekker state om den inneholder en action, og sender videre førhåldsvis til /success eller /stats
