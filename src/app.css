@@ -4,8 +4,8 @@
 
 /* COMMON CSS */
 body {
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	font-family: 'Nunito Sans', Lato, 'Trebuchet MS', sans-serif;
 	height: 100%;
 	font-family: 'Nunito Sans', Lato, 'Trebuchet MS', sans-serif;
@@ -123,6 +123,13 @@ button span {
 
 button:hover {
 	background-color: var(--himmel-30);
+}
+
+button:disabled {
+	background-color: var(--himmel-10);
+	border-color: var(--himmel-10);
+	color: var(--himmel-30);
+	cursor: not-allowed;
 }
 
 button.big {

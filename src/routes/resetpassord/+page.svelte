@@ -63,16 +63,29 @@
     }
   }
 
-  onMount(() => {
-    const code = $page.state.code
-    const state = $page.state.state
-    const iss = $page.state.iss
+  // STUDENT_PC_AGREEMENT
+  let studentPcAgreementEnabled = import.meta.env.VITE_STUDENT_PC_AGREEMENT_ENABLED === 'true' && $page.state.state?.startsWith('elev')
 
+  let code = $page.state.code
+  let state = $page.state.state
+  let iss = $page.state.iss
+
+  let studentPcAgreementUrl = import.meta.env.VITE_STUDENT_PC_AGREEMENT_URL
+  let studentPcAgreementAcceptedCheckBoxValue = false
+  let studentPcAgreementAccepted = false
+
+  onMount(() => {
     if (!(code && state && iss)) {
       console.log('De er ikke der, slutt å kødde')
-      // Hvis de ikke er der, kan vi vel sende til forsiden egt
       goto('/')
-    } else {
+      return
+    }
+
+    if (studentPcAgreementEnabled && !import.meta.env.VITE_STUDENT_PC_AGREEMENT_URL) {
+      throw new Error('STUDENT_PC_AGREEMENT_ENABLED is true, but STUDENT_PC_AGREEMENT_URL is not set!')
+    }
+
+    if (!studentPcAgreementEnabled) {
       resetPasswordForUser(code, iss, state)
       fakeLoadingMessages()
     }
@@ -81,78 +94,118 @@
 </script>
 
 <div>
-  {#if !resetPasswordResponse}
-    <div class="loading">
-      <IconSpinner />
-      <p class="loadingMessage">{loadingMessage}...</p>
-    </div>
-  {:else if resetPasswordResponse.hasError}
-    <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
-    <div class="error">
-      <p>{resetPasswordResponse.message}</p>
-      <div style="display: flex; gap: 5px; align-items: center"><span class="material-symbols-outlined">arrow_back</span><a href="/">Til startsiden</a></div>
+  {#if studentPcAgreementEnabled && !studentPcAgreementAccepted}
+    <br />
+    
+    <p>
+      <strong>
+        Vi har et eget reglement for elev-PC. Dette må du bekrefte at du har lest og forstått.
+      </strong>
+    </p>
+
+    <br />
+
+    <p>
+      <strong>Vi forventer at du blant annet:</strong>
+    </p>
+    <ul>
+      <li>tar godt vare på PC-en din</li>
+      <li>melder fra til skolen hvis PC-en blir skadet, ikke fungerer eller om du mister den</li>
+    </ul>
+
+    <br />
+
+    <p>
+      <a class="agreement-link" href="{studentPcAgreementUrl}" target="_blank">
+        <span class="material-symbols-outlined">link_2</span>
+        Les hele reglementet (åpnes i ny side).
+      </a>
+    </p>
+
+    <br />
+    <br />
+
+    <label class="agreement-checkbox">
+      <input type="checkbox" bind:checked={studentPcAgreementAcceptedCheckBoxValue} />
+      <span>
+        Jeg bekrefter at jeg har lest og forstått reglement for elev-PC
+      </span>
+    </label>
+
+    <br />
+
+    <div class="next-button-container">
+      <button disabled={!studentPcAgreementAcceptedCheckBoxValue} on:click={() => { studentPcAgreementAccepted = true; resetPasswordForUser(code, iss, state) }}>Neste</button>
     </div>
   {:else}
-    <h3>Hei, {resetPasswordResponse.displayName}</h3>
-    <div class="section">
-      <p><strong>Brukernavn:</strong> {resetPasswordResponse.userPrincipalName}</p>
-    </div>
-    <div class="section">
-      <p>Midlertidig passord er sendt til: {resetPasswordResponse.maskedPhoneNumber}</p>
-    </div>
-    <InfoBox title="Ikke fått SMS?">
-      <p><strong>Er ikke dette ditt mobilnummer?</strong></p>
-      <a href="https://minprofil.kontaktregisteret.no" target="_blank">Trykk her for å sjekke hva du har registrert i Kontakt- og reservasjonsregisteret</a>
-      <br />
-      <br />
-      <p><strong>Har du ikke fått SMS?</strong></p>
-      <p>Vent i 5 minutter og forsøk igjen. Om det ikke hjelper, ta kontakt med servicedesk</p>
-    </InfoBox>
-    <div class="section">
-      <p><strong>Når du har fått SMS skal du:</strong></p>
-      <p>1. Logge på med passord fra SMS</p>
-      <p>2. Sette nytt passord<strong>*</strong></p>
-      <p>3. Sette opp tofaktorautentisering<strong>**</strong></p>
-    </div>
-    <div class="section">
-      <button class="big" on:click={() => { entraLogin(resetPasswordResponse.userPrincipalName, resetPasswordResponse.logEntryId) }}>Klikk her når du har mottatt SMS</button>
-      <!--<a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a>-->
-      <dialog bind:this={infoModal}>
-        <form method="dialog">
-            <div class="modalContent">
-              <div>
-                <h2 class="modalTitle">VIKTIG!</h2>
-                <p><strong>Steg 1:</strong> Logg på med passord fra SMS</p>
-                <p><strong>Steg 2:</strong> Husk at "Nåværende passord" er passord fra SMS</p>
+    {#if !resetPasswordResponse}
+      <div class="loading">
+        <IconSpinner />
+        <p class="loadingMessage">{loadingMessage}...</p>
+      </div>
+    {:else if resetPasswordResponse.hasError}
+      <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
+      <div class="error">
+        <p>{resetPasswordResponse.message}</p>
+        <div style="display: flex; gap: 5px; align-items: center"><span class="material-symbols-outlined">arrow_back</span><a href="/">Til startsiden</a></div>
+      </div>
+    {:else}
+      <h3>Hei, {resetPasswordResponse.displayName}</h3>
+      <div class="section">
+        <p><strong>Brukernavn:</strong> {resetPasswordResponse.userPrincipalName}</p>
+      </div>
+
+      <div class="section">
+        <p>Midlertidig passord er sendt til: {resetPasswordResponse.maskedPhoneNumber}</p>
+      </div>
+
+      <div class="section">
+        <button class="big" on:click={() => { entraLogin(resetPasswordResponse.userPrincipalName, resetPasswordResponse.logEntryId) }}>Klikk her når du har mottatt SMS</button>
+        <!--<a href="https://aka.ms/mysecurityinfo?login_hint={resetPasswordResponse.userPrincipalName}" target="_blank">https://aka.ms/mysecurityinfo</a>-->
+        <dialog bind:this={infoModal}>
+          <form method="dialog">
+              <div class="modalContent">
+                <div>
+                  <h2 class="modalTitle">VIKTIG!</h2>
+                  <p>Du skal bruke det midlertidige passordet som du fikk på SMS, to ganger:</p>
+                  <ol>
+                    <li>for å logge på</li>
+                    <li>som <strong>"nåværende passord"</strong> når du lager nytt passord</li>
+                  </ol>
+                </div>
                 <br />
-              </div>
-              <p><i>Sender deg videre om {countDown} sekunder</i></p>
+                <p><i>Du sendes videre til innlogging om {countDown} sekunder</i></p>
+            </div>
+          </form>
+        </dialog>
+        {#if entraLoading}
+          <IconSpinner width="20px" />
+        {/if}
+        {#if entraErrorMessage}
+          <div class="error">
+            <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
+            <p>{entraErrorMessage}</p>
+            <div style="display: flex; gap: 5px; align-items: center"><span class="material-symbols-outlined">arrow_back</span><a href="/">Til startsiden</a></div>
           </div>
-        </form>
-      </dialog>
-      {#if entraLoading}
-        <IconSpinner width="20px" />
-      {/if}
-      {#if entraErrorMessage}
-        <div class="error">
-          <h3 class="errorTitle">Oi, noe gikk galt 😩</h3>
-          <p>{entraErrorMessage}</p>
-          <div style="display: flex; gap: 5px; align-items: center"><span class="material-symbols-outlined">arrow_back</span><a href="/">Til startsiden</a></div>
-        </div>
-      {/if}
-    </div>
+        {/if}
+      </div>
+
+      <br />
+
+      <InfoBox title="Ikke mottatt SMS? Trykk her">
+        <p><strong>Er ikke dette ditt mobilnummer?</strong></p>
+        <a href="https://minprofil.kontaktregisteret.no" target="_blank">Trykk her for å sjekke hva du har registrert i Kontakt- og reservasjonsregisteret</a>
+        <br />
+        <br />
+        <p><strong>Har du ikke fått SMS?</strong></p>
+        <p>Vent i 5 minutter og forsøk igjen. Om det ikke hjelper, ta kontakt med servicedesk</p>
+        <br />
+        <p><strong>Servicedesk</strong></p>
+        <p>Telefon: <a href="tel:{import.meta.env.VITE_SERVICEDESK_TLF.replaceAll(' ', '')}">{import.meta.env.VITE_SERVICEDESK_TLF}</a></p>
+        <p>E-post: <a href="mailto:{import.meta.env.VITE_SERVICEDESK_EPOST}">{import.meta.env.VITE_SERVICEDESK_EPOST}</a></p>
+      </InfoBox>
+    {/if}
   {/if}
-  <br>
-  <InfoBox title="Trenger du hjelp?">
-    <p>Telefon: <a href="tel:{import.meta.env.VITE_SERVICEDESK_TLF.replaceAll(' ', '')}">{import.meta.env.VITE_SERVICEDESK_TLF}</a></p>
-    <p>E-post: <a href="mailto:{import.meta.env.VITE_SERVICEDESK_EPOST}">{import.meta.env.VITE_SERVICEDESK_EPOST}</a></p>
-  </InfoBox>
-  <div class="section">
-    <p><i><strong>*</strong> Bruk SMS-passord som "Nåværende passord"</i></p>
-  </div>
-  <div class="section">
-    <p><i><strong>**</strong> Tofaktorautentisering betyr at du bruker to faktorer (bevis) for å bekrefte identiteten din når du logger deg på.</i></p>
-  </div>
 </div>
 
 
@@ -186,5 +239,25 @@
   }
   form {
     height: 100%;
+  }
+
+  .agreement-link > span {
+    font-size: 1.2rem;
+    vertical-align: sub;
+  }
+
+  .agreement-checkbox {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .next-button-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  li {
+    margin-left: 2rem;
   }
 </style>
