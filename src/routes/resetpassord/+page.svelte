@@ -167,7 +167,7 @@
               <div class="modalContent">
                 <div>
                   <h2 class="modalTitle">VIKTIG!</h2>
-                  <p>Du skal bruke det midlertidige passordet som du fikk på SMS to ganger:</p>
+                  <p>Du skal bruke det midlertidige passordet som du fikk på SMS, to ganger:</p>
                   <ol>
                     <li>for å logge på</li>
                     <li>som <strong>"nåværende passord"</strong> når du lager nytt passord</li>
