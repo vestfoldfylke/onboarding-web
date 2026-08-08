@@ -64,6 +64,38 @@ export const resetPassword = async (code, iss, state) => {
   return data
 }
 
+export const startPasskeyOnboarding = async (code, iss, state) => {
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    await sleep(1000)
+    return {
+      logEntryId: 'mockpasskeystart',
+      displayName: 'Mock Trynefjert',
+      userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no',
+      temporaryAccessPass: 'ABCD-1234-EFGH',
+      lifeTimeInMinutes: 60,
+      expireDateTime: new Date(Date.now() + 60 * 60 * 1000).toISOString()
+    }
+  }
+  const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/StartPasskeyOnboarding`, { code, iss, state }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  return data
+}
+
+export const completePasskeyOnboarding = async (logEntryId) => {
+  if (!logEntryId) throw new Error('Missing required paramteres "logEntryId"')
+  if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
+    await sleep(1500)
+    return {
+      completed: true,
+      message: 'Passkey er registrert (mock)',
+      logEntryId,
+      displayName: 'Mock Trynefjert',
+      userPrincipalName: 'mock.trynefjerten.sorensen@fisfylke.no'
+    }
+  }
+  const { data } = await axios.post(`${import.meta.env.VITE_ONBOARDING_API_URI}/CompletePasskeyOnboarding`, { logEntryId }, { headers: { 'x-functions-key': import.meta.env.VITE_ONBOARDING_API_PUBLIC_KEY } })
+  return data
+}
+
 export const verifyUser = async (code, iss, state) => {
   if (import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === 'true') {
     await sleep(1000)

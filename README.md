@@ -18,6 +18,17 @@ Onboarding, tilbakestilling av passord, og verifisering av brukere ved bruk av I
 - /entramfacallback tar i mot state og code, sender over til /success
 - /success sender over state og code til onboarding-api, api logger inn brukeren (igjen), returner upn, logEntryId, displayName. Nå er den ferdig
 
+### Passordfri innlogging (passkey via TAP)
+- Velger «sett opp passordfri innlogging» på /elev eller /ansatt
+- Script spør onboarding-api om å få loginurl til idporten, med action "passkey" som query param - redirecter så til id-porten-loginUrl den får av onboard-api
+- Bruker logger på idporten og blir redirected tilbake til /idportencallback
+- /idportencallback sjekker at den har fått med seg state, code, og iss i query params, så sjekker den om action (i state) er "passkey", og sender bruker over til /passkey sammen med state, code, og iss
+- /passkey sender så mottatt state, code, iss videre til onboarding-api/StartPasskeyOnboarding - api logger inn brukeren, henter Entra-brukeren og utsteder en engangs Temporary Access Pass (TAP) via Graph, returnerer temporaryAccessPass, lifeTimeInMinutes, expireDateTime, logEntryId, upn og displayName
+- Frontenden viser TAP-koden på skjerm med kopi-knapp og lenke til `https://aka.ms/mysecurityinfo` (åpnes i ny fane). TAP-verdien lagres ikke i database og persisteres ikke i klienten (kun i minne så lenge komponenten lever).
+- Bruker registrerer passkey på Microsoft-siden ved hjelp av engangskoden, og trykker deretter «Jeg er ferdig»
+- /passkey sender så logEntryId til onboarding-api/CompletePasskeyOnboarding - api sjekker via Graph om en passkey/FIDO2-metode faktisk er registrert
+- Ved `completed: true` navigerer frontend til /passkey/success. Ved `completed: false` vises melding fra API og «Prøv igjen»-knapp uten å navigere bort - bruker kan fullføre registreringen og prøve på nytt.
+
 ### Aktiver / verifiser bruker
 - Velger aktiver/verifiser bruker
 - Script spør onboarding-api om å få loginurl til idporten, med action "verifyuser" som query param - redirecter så til id-porten-loginUrl den får av onboard-api
@@ -34,21 +45,29 @@ Onboarding, tilbakestilling av passord, og verifisering av brukere ved bruk av I
 Startside, gir deg valget om du er elev eller ansatt
 
 ### /elev
-Elevside, gir deg bare et valg - tilbakestill passord. Kan vel utvides om det trengs.
+Elevside, gir deg to valg - tilbakestill passord, og sett opp passordfri innlogging (passkey).
 - Tilbakestill passord spør api om loginUrl til ID-Porten (params: user_type=elev&action=resetpassword) og redirecter deg dit
+- Passkey spør api om loginUrl til ID-Porten (params: user_type=elev&action=passkey) og redirecter deg dit
 
 ### /ansatt
-Ansattside, gir deg valg om å verifisere brukeren din, eller tilbakestille passord
+Ansattside, gir deg valg om å tilbakestille passord, eller sette opp passordfri innlogging (passkey).
 - Tilbakestill passord spør api loginUrl til ID-Porten (params: user_type=ansatt&action=resetpassword) og redirecter deg dit
+- Passkey spør api loginUrl til ID-Porten (params: user_type=ansatt&action=passkey) og redirecter deg dit
 
 ### /idportencallback
-Callbackside for ID-porten redirects. Tar i mot state, code, iss - henter userType og action fra state, og sender videre førhåldsvis til /resetpassord eller /verifyuser (jøss, her har jeg brukt norsk og engelsk om hverandre...)
+Callbackside for ID-porten redirects. Tar i mot state, code, iss - henter userType og action fra state, og sender videre førhåldsvis til /resetpassord, /verifyuser eller /passkey (jøss, her har jeg brukt norsk og engelsk om hverandre...)
 
 ### /resetpassord
 Får state, code, og iss fra page-state. Sender over til api, og venter på respons. Bruker kan klikke seg videre når hen har fått midlertidig passord på SMS. Da hentes loginUrl for entraPwd enterprise-app, viser ei litta dialog med info om neste steg, og redirecter til loginUrl etter noen sekunder.
 
 ### /verifyuser
 Får state, code, og iss fra page-state. Sender over til api, og venter på respons. Ved 200 respons, henter loginUrl for entraMfa-enterprise-app, og redirecter.
+
+### /passkey
+Får state, code, og iss fra page-state. Sender over til api/StartPasskeyOnboarding, og venter på respons. Viser TAP-koden på skjerm med kopi-knapp og lenke til `https://aka.ms/mysecurityinfo`. Når bruker trykker «Jeg er ferdig» kalles api/CompletePasskeyOnboarding med logEntryId. Ved `completed: true` navigerer til /passkey/success, ellers vises retry-melding.
+
+### /passkey/success
+Får displayName og userPrincipalName fra page-state. Bekrefter at passkey er registrert.
 
 ### /entrapwdcallback
 Callbackside for entraPwd-enterprise-app redirects. Tar i mot state og code, og sender til api /EntraPwdAuth, om 200 respons, henter loginUrl for entraMfa-enterprise-app og redirecter til respons

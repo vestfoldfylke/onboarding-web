@@ -18,6 +18,8 @@
         goto('/resetpassord', { state: { code, state, iss }, replaceState: true })
       } else if (actionString.includes('verifyuser')) {
         goto('/verifyuser', { state: { code, state, iss }, replaceState: true })
+      } else if (actionString.includes('passkey')) {
+        goto('/passkey', { state: { code, state, iss }, replaceState: true })
       } else {
         throw new Error('Her vart det itj no gyldig action... prøv igjen')
       }
