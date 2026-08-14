@@ -9,15 +9,15 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^7.0.1",
-		"@sveltejs/kit": "^2.63.1",
-		"@sveltejs/vite-plugin-svelte": "^7.1.2",
-		"svelte": "^5.56.3",
-		"vite": "^8.0.16"
+		"@sveltejs/kit": "^2.70.2",
+		"@sveltejs/vite-plugin-svelte": "^7.2.0",
+		"svelte": "^5.56.8",
+		"vite": "^8.2.1"
 	},
 	"type": "module",
 	"dependencies": {
-		"axios": "^1.8.4",
-		"chart.js": "^4.4.3",
+		"axios": "^1.19.0",
+		"chart.js": "^4.5.1",
 		"chartjs-plugin-datalabels": "^2.2.0"
 	}
 }
