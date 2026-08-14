@@ -99,7 +99,7 @@
     
     <p>
       <strong>
-        Vi har et eget reglement for elev-PC. Dette må du bekrefte at du har lest og forstått.
+        Vi har et eget reglement for elev-PC og lån fra skolebibliotek. Dette må du bekrefte at du har lest og forstått.
       </strong>
     </p>
 
@@ -128,7 +128,7 @@
     <label class="agreement-checkbox">
       <input type="checkbox" bind:checked={studentPcAgreementAcceptedCheckBoxValue} />
       <span>
-        Jeg bekrefter at jeg har lest og forstått reglement for elev-PC
+        Jeg bekrefter at jeg har lest og forstått reglement for elev-PC og lån fra skolebibliotek
       </span>
     </label>
 
